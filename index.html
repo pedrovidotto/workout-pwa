@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workout Plan</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#007bff">
+  <link rel="icon" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Workout Plan">
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    h1 { color: #007bff; }
+    .day { margin-bottom: 20px; }
+    .reset { margin-top: 20px; }
+    label.checked { text-decoration: line-through; color: gray; }
+  </style>
+</head>
+<body>
+  <h1>7-Day Workout Plan</h1>
+  <div class="day">
+    <strong>Day 1:</strong><br>
+    <label><input type="checkbox" /> Push – Chest Focus</label>
+  </div>
+  <div class="day">
+    <strong>Day 2:</strong><br>
+    <label><input type="checkbox" /> Pull – Back + Biceps</label>
+  </div>
+  <div class="day">
+    <strong>Day 3:</strong><br>
+    <label><input type="checkbox" /> Legs – Quads + Calves</label>
+  </div>
+  <div class="day">
+    <strong>Day 4:</strong><br>
+    <label><input type="checkbox" /> Push – Shoulders Focus</label>
+  </div>
+  <div class="day">
+    <strong>Day 5:</strong><br>
+    <label><input type="checkbox" /> Pull – Rear Delts + Lats</label>
+  </div>
+  <div class="day">
+    <strong>Day 6:</strong><br>
+    <label><input type="checkbox" /> Legs – Glutes + Hams</label>
+  </div>
+  <div class="day">
+    <strong>Day 7:</strong><br>
+    <label><input type="checkbox" /> Active Rest / Light Cardio</label>
+  </div>
+  <button class="reset" onclick="resetCheckboxes()">Reset</button>
+
+  <script>
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', () => {
+        cb.parentElement.classList.toggle('checked', cb.checked);
+        saveState();
+      });
+    });
+
+    function saveState() {
+      const states = Array.from(checkboxes).map(cb => cb.checked);
+      localStorage.setItem('workoutState', JSON.stringify(states));
+    }
+
+    function resetCheckboxes() {
+      checkboxes.forEach(cb => {
+        cb.checked = false;
+        cb.parentElement.classList.remove('checked');
+      });
+      localStorage.removeItem('workoutState');
+    }
+
+    window.onload = () => {
+      const saved = JSON.parse(localStorage.getItem('workoutState') || '[]');
+      checkboxes.forEach((cb, i) => {
+        cb.checked = saved[i] || false;
+        cb.parentElement.classList.toggle('checked', cb.checked);
+      });
+    };
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(reg => console.log('Service worker registered.', reg))
+          .catch(err => console.log('Service worker failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>
