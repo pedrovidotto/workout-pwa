@@ -1,614 +1,111 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>7-Day Workout Plan</title>
-    <link rel="manifest" href="manifest.json" />
-    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
-    <meta name="theme-color" content="#f44336" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-      body {
-        font-family: 'Inter Tight', sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background-color: #121212;
-        margin: 0;
-        padding: 0;
-        transition: background-color 0.5s ease;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WORKOUT.SYS</title>
 
-      body.light-mode {
-        background-color: #f0f0f0;
-      }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 
-      .container {
-        font-family: 'Inter Tight', sans-serif;
-        background-color: #1f1f1f;
-        color: #fff;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-        width: 75%;
-        max-width: 600px;
-        transition: background-color 0.5s ease, color 0.5s ease;
-        margin-top: 50px;
-        position: relative;
-      }
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2d2a27"> 
+</head>
+<body>
 
-      .container.light-mode {
-        background-color: #fff;
-        color: #333;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      }
+<div class="container">
 
-      h1 {
-        font-family: 'Inter Tight', sans-serif;
-        text-align: left;
-        color: #f44336;
-        margin-bottom: 20px;
-        margin-top: 0;
-      }
-
-      h2 {
-        font-family: 'Inter Tight', sans-serif;
-        color: #f44336;
-        margin-top: 30px;
-        margin-bottom: 10px;
-        text-align: left;
-      }
-
-      ul {
-        font-family: 'Inter Tight', sans-serif;
-        list-style-type: none;
-        padding: 0;
-        margin-bottom: 20px;
-      }
-
-      li {
-        font-family: 'Inter Tight', sans-serif;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-        border-bottom: 1px solid #333;
-        padding-bottom: 10px;
-      }
-
-      li:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
-        margin-bottom: 0;
-      }
-
-      input[type="checkbox"] {
-        margin-right: 15px;
-        width: 24px;
-        height: 24px;
-        background-color: #333;
-        border: 1px solid #555;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, border-color 0.3s ease;
-      }
-
-      input[type="checkbox"]:checked {
-        background-color: #f44336;
-        border-color: #f44336;
-      }
-
-      .light-mode input[type="checkbox"] {
-        background-color: #fff;
-        border-color: #ccc;
-      }
-
-      .light-mode input[type="checkbox"]:checked {
-        background-color: #f44336;
-        border-color: #f44336;
-      }
-
-      label {
-        font-family: 'Inter Tight', sans-serif;
-        flex: 1;
-        font-size: 16px;
-        color: #eee;
-        text-align: left;
-        transition: color 0.3s ease;
-      }
-
-      .light-mode label {
-        color: #333;
-      }
-
-      li.completed label {
-        font-family: 'Inter Tight', sans-serif;
-        text-decoration: line-through;
-        color: #666;
-      }
-
-      .button-container {
-        font-family: 'Inter Tight', sans-serif;
-        text-align: left;
-        margin-top: 40px;
-        margin-left: 0;
-      }
-
-      #reset-button {
-        font-family: 'Inter Tight', sans-serif;
-        background-color: #f44336;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-        width: 100%;
-        max-width: 200px;
-        margin-left: 0;
-      }
-
-      #reset-button:hover {
-        background-color: #d32f2f;
-      }
-
-      .series-reps {
-        font-family: 'Inter Tight', sans-serif;
-        margin-left: auto;
-        color: #ddd;
-        transition: color 0.3s ease;
-        text-align: left;
-      }
-
-      .light-mode .series-reps {
-        color: #555;
-        text-align: left;
-      }
-
-      #theme-toggle {
-        font-family: 'Inter Tight', sans-serif;
-        position: relative;
-        top: 0;
-        right: 0;
-        background-color: #f44336;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
-        transition: background-color 0.3s ease, filter 0.3s ease;
-        z-index: 10;
-        filter: grayscale(0%);
-      }
-
-      #theme-toggle:hover {
-        background-color: #e63946;
-        filter: grayscale(0%);
-      }
-
-      #theme-toggle.light-mode {
-        filter: grayscale(0%);
-      }
-
-      body {
-        --primary-color: #f44336;
-      }
-
-      .light-mode {
-        --primary-color: #f44336;
-      }
-
-      input[type="checkbox"]:checked {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-      }
-
-      .light-mode input[type="checkbox"]:checked {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-      }
-
-      #reset-button {
-        background-color: var(--primary-color);
-      }
-
-      #reset-button:hover {
-        background-color: #d32f2f;
-      }
-
-      #theme-toggle {
-        background-color: var(--primary-color);
-      }
-
-      .header {
-        font-family: 'Inter Tight', sans-serif;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        padding: 20px 0;
-        margin-bottom: 20px;
-        position: relative;
-        border-radius: 12px 12px 0 0;
-        transition: background-color 0.5s ease;
-      }
-
-      .header.light-mode {
-        border-bottom: 1px solid #ddd;
-      }
-
-      .header h1 {
-        color: #f44336;
-        margin-bottom: 0;
-        margin-top: 0;
-        transition: color 0.5s ease;
-      }
-
-      .header.light-mode h1 {
-        color: #f44336;
-      }
-
-      .container {
-        border-radius: 0 0 12px 12px;
-        overflow: hidden;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <h1>7-Day Workout Plan</h1>
-        <button id="theme-toggle">Switch Mode</button>
-      </div>
-      <h2>Day 1: Push Day 1 (Mon)</h2>
-      <ul id="day1">
-        <li>
-          <input type="checkbox" id="day1-exercise1" />
-          <label for="day1-exercise1">Machine Shoulder Press</label>
-          <span class="series-reps">(3x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day1-exercise2" />
-          <label for="day1-exercise2">Cable Front Raise</label>
-          <span class="series-reps">(3x12-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day1-exercise3" />
-          <label for="day1-exercise3">Incline Chest Press Machine</label>
-          <span class="series-reps">(3x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day1-exercise4" />
-          <label for="day1-exercise4">Seated Chest Press Machine</label>
-          <span class="series-reps">(3x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day1-exercise5" />
-          <label for="day1-exercise5">Cable Triceps Pushdown</label>
-          <span class="series-reps">(3x10-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day1-exercise6" />
-          <label for="day1-exercise6">Cable Crunch</label>
-          <span class="series-reps">(3x15-20)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day1-exercise7" />
-          <label for="day1-exercise7">Stationary Bike</label>
-          <span class="series-reps">(20')</span>
-        </li>
-      </ul>
-      <h2>Day 2: Pull Day 1 (Tue)</h2>
-      <ul id="day2">
-        <li>
-          <input type="checkbox" id="day2-exercise1" />
-          <label for="day2-exercise1">Lat Pulldown (wide)</label>
-          <span class="series-reps">(3x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day2-exercise2" />
-          <label for="day2-exercise2">Seated Cable Row (neutral)</label>
-          <span class="series-reps">(3x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day2-exercise3" />
-          <label for="day2-exercise3">Machine Reverse Fly</label>
-          <span class="series-reps">(3x12-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day2-exercise4" />
-          <label for="day2-exercise4">Cable Face Pull</label>
-          <span class="series-reps">(3x15-20)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day2-exercise5" />
-          <label for="day2-exercise5">Cable Bicep Curl</label>
-          <span class="series-reps">(3x10-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day2-exercise6" />
-          <label for="day2-exercise6">Cable Hammer Curl</label>
-          <span class="series-reps">(3x10-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day2-exercise7" />
-          <label for="day2-exercise7">Inclined Leg Raises</label>
-          <span class="series-reps">(3x15-20)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day2-exercise8" />
-          <label for="day2-exercise8">Stairmaster</label>
-          <span class="series-reps">(20')</span>
-        </li>
-      </ul>
-      <h2>Day 3: Leg Day 1 (Wed)</h2>
-      <ul id="day3">
-        <li>
-          <input type="checkbox" id="day3-exercise1" />
-          <label for="day3-exercise1">Smith Machine Back Squat</label>
-          <span class="series-reps">(3x6-10)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day3-exercise2" />
-          <label for="day3-exercise2">Romanian Deadlift (Dumbbell)</label>
-          <span class="series-reps">(3x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day3-exercise3" />
-          <label for="day3-exercise3">Hip Thrust</label>
-          <span class="series-reps">(4x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day3-exercise4" />
-          <label for="day3-exercise4">Leg Press</label>
-          <span class="series-reps">(3x10-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day3-exercise5" />
-          <label for="day3-exercise5">Lying Leg Curl</label>
-          <span class="series-reps">(3x10-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day3-exercise6" />
-          <label for="day3-exercise6">Standing Calf Raise</label>
-          <span class="series-reps">(3x12-15)</span>
-        </li>
-      </ul>
-      <h2>Day 4: Push Day 2 (Thu)</h2>
-      <ul id="day4">
-        <li>
-          <input type="checkbox" id="day4-exercise1" />
-          <label for="day4-exercise1">Machine Shoulder Press</label>
-          <span class="series-reps">(3x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day4-exercise2" />
-          <label for="day4-exercise2">Cable Crossbody Front Raise</label>
-          <span class="series-reps">(3x12-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day4-exercise3" />
-          <label for="day4-exercise3">Incline Chest Press Machine</label>
-          <span class="series-reps">(3x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day4-exercise4" />
-          <label for="day4-exercise4">Cable Crossover (low to high)</label>
-          <span class="series-reps">(3x10-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day4-exercise5" />
-          <label for="day4-exercise5">Overhead Cable Extension</label>
-          <span class="series-reps">(3x10-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day4-exercise6" />
-          <label for="day4-exercise6">Inclined Leg Raises</label>
-          <span class="series-reps">(3x15-20)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day4-exercise7" />
-          <label for="day4-exercise7">Stationary Bike</label>
-          <span class="series-reps">(20')</span>
-        </li>
-      </ul>
-      <h2>Day 5: Pull Day 2 (Fri)</h2>
-      <ul id="day5">
-        <li>
-          <input type="checkbox" id="day5-exercise1" />
-          <label for="day5-exercise1">Lat Pulldown (close neutral)</label>
-          <span class="series-reps">(3x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day5-exercise2" />
-          <label for="day5-exercise2">Seated Cable Row (wide)</label>
-          <span class="series-reps">(3x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day5-exercise3" />
-          <label for="day5-exercise3">Machine Reverse Fly</label>
-          <span class="series-reps">(3x12-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day5-exercise4" />
-          <label for="day5-exercise4">Cable Upright Row (narrow)</label>
-          <span class="series-reps">(3x10-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day5-exercise5" />
-          <label for="day5-exercise5">Cable Bicep Curl</label>
-          <span class="series-reps">(3x10-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day5-exercise6" />
-          <label for="day5-exercise6">Cable Preacher Curl</label>
-          <span class="series-reps">(3x10-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day5-exercise7" />
-          <label for="day5-exercise7">Cable Crunch</label>
-          <span class="series-reps">(3x15-20)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day5-exercise8" />
-          <label for="day5-exercise8">Stairmaster</label>
-          <span class="series-reps">(20')</span>
-        </li>
-      </ul>
-      <h2>Day 6: Leg Day 2 (Sat)</h2>
-      <ul id="day6">
-        <li>
-          <input type="checkbox" id="day6-exercise1" />
-          <label for="day6-exercise1">Hip Thrust</label>
-          <span class="series-reps">(4x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day6-exercise2" />
-          <label for="day6-exercise2">Romanian Deadlift (Dumbbell)</label>
-          <span class="series-reps">(3x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day6-exercise3" />
-          <label for="day6-exercise3">Bulgarian Split Squat</label>
-          <span class="series-reps">(3x8-12)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day6-exercise4" />
-          <label for="day6-exercise4">Leg Extension</label>
-          <span class="series-reps">(3x10-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day6-exercise5" />
-          <label for="day6-exercise5">Seated Leg Curl</label>
-          <span class="series-reps">(3x10-15)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day6-exercise6" />
-          <label for="day6-exercise6">Seated Calf Raise</label>
-          <span class="series-reps">(3x15-20)</span>
-        </li>
-      </ul>
-      <h2>Day 7: Cardio (Sun)</h2>
-      <ul id="day7">
-        <li>
-          <input type="checkbox" id="day7-exercise1" />
-          <label for="day7-exercise1">Stairmaster</label>
-          <span class="series-reps">(30')</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day7-exercise2" />
-          <label for="day7-exercise2">Stationary Bike</label>
-          <span class="series-reps">(40')</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day7-exercise3" />
-          <label for="day7-exercise3">Cable Crunch</label>
-          <span class="series-reps">(3x15-20)</span>
-        </li>
-        <li>
-          <input type="checkbox" id="day7-exercise4" />
-          <label for="day7-exercise4">Standing Calf Raise</label>
-          <span class="series-reps">(3x12-15)</span>
-        </li>
-      </ul>
-      <div class="button-container">
-        <button id="reset-button">Reset Plan</button>
-      </div>
+  <header>
+    <button id="boot-sequence-btn" class="system-btn">
+      <span class="status-dot"></span>
+      <span id="boot-btn-text">INITIALIZE BOOT SEQUENCE</span>
+    </button>
+    <div class="header-top-row">
+      <h1 class="logo">
+        <img src="logo.svg" alt="Logo" class="logo-svg">
+      </h1>
+      <button id="theme-toggle-btn" class="day-btn">SM</button>
     </div>
-    <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("/service-worker.js");
-        });
-      }
+    <hr class="header-divider">
+    <nav id="day-selector"></nav>
+  </header>
 
-      const workoutLists = document.querySelectorAll("ul");
-      const resetButton = document.getElementById("reset-button");
-      const body = document.body;
-      const container = document.querySelector(".container");
-      const themeToggle = document.getElementById("theme-toggle");
-      let isDarkMode = true;
+  <main id="workout-container">
+    <div id="workout-header">
+      <h2 id="workout-title"></h2>
+      <p id="workout-duration" class="data-readout"></p>
+    </div>
 
-      function updateUI() {
-        workoutLists.forEach((list) => {
-          const listItems = list.querySelectorAll('li');
-          listItems.forEach(item => {
-            const checkbox = item.querySelector('input[type="checkbox"]');
-            const label = item.querySelector('label');
-            if (checkbox.checked) {
-              item.classList.add("completed");
-            } else {
-              item.classList.remove("completed");
-            }
-          });
-        });
-      }
+    <ul id="exercise-list">
+      </ul>
 
-      function loadCheckboxes() {
-        workoutLists.forEach((list) => {
-          const checkboxes = list.querySelectorAll('input[type="checkbox"]');
-          checkboxes.forEach((checkbox) => {
-            const savedState = localStorage.getItem(checkbox.id);
-            checkbox.checked = savedState === "true";
-          });
-        });
-        updateUI();
-      }
+    <h3 id="completed-title" class="category-title hidden">// COMPLETED</h3>
+    <ul id="completed-list">
+        </ul>
 
-      function saveCheckboxes() {
-        workoutLists.forEach((list) => {
-          const checkboxes = list.querySelectorAll('input[type="checkbox"]');
-          checkboxes.forEach((checkbox) => {
-            localStorage.setItem(checkbox.id, checkbox.checked);
-          });
-        });
-      }
+  </main>
 
-      workoutLists.forEach((list) => {
-        list.addEventListener("change", (event) => {
-          if (event.target.type === "checkbox") {
-            saveCheckboxes();
-            updateUI();
-          }
-        });
-      });
+  <footer>
+    <button id="reset-button" class="btn-secondary">PURGE WEEKLY PROGRESS</button>
+  </footer>
+</div>
 
-      resetButton.addEventListener("click", () => {
-        workoutLists.forEach((list) => {
-          const checkboxes = list.querySelectorAll('input[type="checkbox"]');
-          checkboxes.forEach((checkbox) => {
-            checkbox.checked = false;
-            localStorage.setItem(checkbox.id, false);
-          });
-        });
-        updateUI();
-      });
+<div id="timer-display" class="hidden">00:00</div>
 
-      function toggleTheme() {
-        isDarkMode = !isDarkMode;
-        body.classList.toggle("light-mode", !isDarkMode);
-        container.classList.toggle("light-mode", !isDarkMode);
-        localStorage.setItem("darkMode", isDarkMode);
-        if (isDarkMode) {
-          themeToggle.classList.remove('light-mode');
-        } else {
-          themeToggle.classList.add('light-mode');
-        }
-      }
+<div id="boot-modal-overlay" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="boot-modal-title">
+        <div class="modal-header">
+            <h2 id="boot-modal-title">7:00 AM HARDWARE CHECK</h2>
+            <button id="boot-modal-close-btn" class="btn-icon" aria-label="Close boot modal">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="divider"></div>
+        <p class="modal-body-text" style="margin-bottom: 16px;">Decompress the "Morning Spine" before heavy load.</p>
+        <ul id="boot-list">
+            </ul>
+    </div>
+</div>
+<div id="info-modal-overlay" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="info-modal-title">
+        <div class="modal-header">
+            <h2 id="info-modal-title">Exercise Title</h2>
+            <button id="info-modal-close-btn" class="btn-icon" aria-label="Close info modal">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="divider"></div>
+        <div id="info-modal-instructions">
+            <p>Instructions will go here.</p>
+        </div>
+    </div>
+</div>
 
-      const savedTheme = localStorage.getItem("darkMode");
-      if (savedTheme === "false") {
-        toggleTheme();
-      }
+<div id="reset-modal-overlay" class="modal-overlay hidden" aria-hidden="true">
+    <div id="reset-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="reset-modal-title">
+        <div class="modal-header">
+            <h2 id="reset-modal-title">CONFIRM ACTION</h2>
+        </div>
+        <div class="divider"></div>
+        <p class="modal-body-text">Purge all weekly progress data? This action is irreversible.</p>
+        <div class="modal-buttons">
+            <button id="confirm-reset-btn" class="btn-primary">CONFIRM PURGE</button>
+            <button id="cancel-reset-btn" class="btn-secondary">CANCEL</button>
+        </div>
+    </div>
+</div>
 
-      themeToggle.addEventListener("click", toggleTheme);
+<div id="completion-overlay" class="hidden">
+    <div id="completion-card">
+        <h2 id="completion-title">// SYSTEM: TASK COMPLETE</h2>
+        <p id="completion-message">Processing...</p>
+    </div>
+</div>
 
-      loadCheckboxes();
-    </script>
-  </body>
+<script src="script.js"></script>
+</body>
 </html>
