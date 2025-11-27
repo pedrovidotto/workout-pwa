@@ -20,16 +20,19 @@
 <div class="container">
 
   <header>
-    <button id="boot-sequence-btn" class="system-btn">
-      <span class="status-dot"></span>
-      <span id="boot-btn-text">INITIALIZE BOOT SEQUENCE</span>
-    </button>
     <div class="header-top-row">
       <h1 class="logo">
         <img src="logo.svg" alt="Logo" class="logo-svg">
       </h1>
-      <button id="theme-toggle-btn" class="day-btn">SM</button>
+      <button id="theme-toggle-btn" class="day-btn">
+          </button>
     </div>
+
+    <button id="boot-sequence-btn" class="system-btn">
+      <span class="status-dot"></span>
+      <span id="boot-btn-text">INITIALIZE BOOT SEQUENCE</span>
+    </button>
+
     <hr class="header-divider">
     <nav id="day-selector"></nav>
   </header>
@@ -47,7 +50,12 @@
     <ul id="completed-list">
         </ul>
 
-  </main>
+    <div id="background-container">
+        <h3 class="category-title">// BACKGROUND PROCESSES</h3>
+        <ul id="background-list">
+            </ul>
+    </div>
+    </main>
 
   <footer>
     <button id="reset-button" class="btn-secondary">PURGE WEEKLY PROGRESS</button>
@@ -70,6 +78,7 @@
             </ul>
     </div>
 </div>
+
 <div id="info-modal-overlay" class="modal-overlay hidden" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="info-modal-title">
         <div class="modal-header">
