@@ -83,16 +83,16 @@ h1, h2, h3 {
   margin-bottom: 0.5em;
 }
 
-/* --- ADDED: Styles for Boot Sequence Button --- */
+/* Boot Sequence Button */
 .system-btn {
-  display: block; /* Make it take full width if needed, or adjust */
+  display: block; 
   width: 100%;
   margin-bottom: 24px;
   background: transparent;
   border: 1px solid var(--border-color-muted);
   color: var(--text-color-muted);
   padding: 12px 16px;
-  font-family: 'Inter', monospace; /* Monospace for system look */
+  font-family: 'Inter', monospace; 
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -114,11 +114,10 @@ h1, h2, h3 {
 .system-btn.complete {
   background-color: var(--accent-color);
   border-color: var(--accent-color);
-  color: var(--background-color); /* Invert for contrast */
+  color: var(--background-color); 
   font-weight: 500;
 }
 
-/* Status Dot Style */
 .status-dot {
   width: 8px;
   height: 8px;
@@ -132,16 +131,15 @@ h1, h2, h3 {
 }
 
 .system-btn.complete .status-dot {
-  background-color: var(--background-color); /* Invert */
+  background-color: var(--background-color); 
 }
-/* --- END ADDED --- */
 
 
 .header-top-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 0px; /* Adjusted since boot button is above */
+  margin-top: 0px; 
 }
 
 .logo {
@@ -242,7 +240,25 @@ header {
 }
 
 .day-btn.day-complete::after {
-    content: ''; 
+    content: '✓';
+    position: absolute;
+    bottom: -2px; 
+    right: 0px;  
+    font-size: 0.7em;
+    line-height: 1;
+    color: var(--checkmark-color); 
+    opacity: 0.7; 
+    transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.day-btn.day-complete:hover::after,
+.day-btn.day-complete.active::after {
+    opacity: 1;
+}
+
+.day-btn.day-complete.active::after,
+.day-btn.day-complete::after { 
+    color: var(--background-color); 
 }
 
 .day-btn.day-complete:not(.active) {
@@ -250,6 +266,10 @@ header {
     color: var(--background-color); 
     border-color: var(--text-color);
     font-weight: 500;
+}
+
+.day-btn.day-complete:not(.active)::after {
+     color: var(--background-color);
 }
 
 #theme-toggle-btn svg {
@@ -302,6 +322,9 @@ header {
   border-color: var(--accent-color);     
   color: var(--background-color);       
   font-weight: 500;
+}
+.day-btn.active.day-complete::after {
+     color: var(--background-color); 
 }
 
 
@@ -596,7 +619,7 @@ footer {
   line-height: 1.3; 
 }
 
-/* --- ADDED: Boot Modal Styles --- */
+/* Boot & Background Modal Styles */
 #boot-modal-title {
     font-family: 'Inter', sans-serif;
     font-size: 1.1rem;
@@ -605,7 +628,7 @@ footer {
     letter-spacing: 0.05em;
 }
 
-#boot-list {
+#boot-list, #background-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -632,7 +655,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--background-color); /* Text color for checkmark (inverted) */
+    color: var(--background-color); 
     transition: all 0.2s ease;
 }
 
@@ -651,6 +674,16 @@ footer {
     margin-bottom: 2px;
 }
 
+/* --- ADDED: Style for background category tag --- */
+.background-category {
+    color: var(--accent-color);
+    font-family: 'Inter', monospace;
+    font-size: 0.8em;
+    margin-right: 4px;
+    font-weight: 400;
+}
+/* --- END ADDED --- */
+
 .boot-meta {
     font-family: 'Inter', monospace;
     font-size: 0.8rem;
@@ -664,7 +697,6 @@ footer {
     color: var(--text-color-muted);
     line-height: 1.4;
 }
-/* --- END ADDED --- */
 
 
 #reset-modal-title {
