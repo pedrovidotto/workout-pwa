@@ -1,9 +1,17 @@
-// --- ADDED: Boot Sequence Data ---
+// --- Boot Sequence Data ---
 const bootData = [
-    { id: 'hang', label: 'Passive Decompress: Dead Hang', details: '2 sets x 30 seconds', instruction: "Opens shoulder girdle & decompresses spinal discs." },
-    { id: 'camel', label: 'Fluid Pump: Cat-Camel', details: '10 reps, SLOWLY', instruction: "Lubricates stiff synovial fluid without force." },
-    { id: 'stretch', label: 'Mobilize: World’s Greatest', details: '3 reps per side', instruction: "Targets hips and thoracic spine." },
-    { id: 'hops', label: 'Ignite: Pogo Hops', details: '2 sets x 15 seconds', instruction: "Wakes up CNS and Fast-Twitch fibers." }
+    { id: 'hang', label: 'Passive Decompress: Dead Hang', details: '2 sets x 30 seconds', instruction: "1. Find a pull-up bar.\n2. Grip tightly and let your body hang loose.\n3. Relax your shoulders and let gravity decompress your spine.\n4. Hold for 30 seconds. Repeat twice." },
+    { id: 'camel', label: 'Fluid Pump: Cat-Camel', details: '10 reps, SLOWLY', instruction: "1. Get on hands and knees.\n2. Arch your back up (Cat) while exhaling.\n3. Dip your back down (Camel) while inhaling.\n4. Move slowly to lubricate the spine." },
+    { id: 'stretch', label: 'Mobilize: World’s Greatest', details: '3 reps per side', instruction: "1. Lunge forward with one leg.\n2. Place opposite hand on the floor.\n3. Rotate your chest and reach free arm to the sky.\n4. Return and straighten front leg for a hamstring stretch." },
+    { id: 'hops', label: 'Ignite: Pogo Hops', details: '2 sets x 15 seconds', instruction: "1. Stand with knees slightly bent.\n2. Hop up and down using only your ankles/calves.\n3. Keep ground contact time minimal.\n4. Wake up the fast-twitch fibers." }
+];
+
+// --- ADDED: Background Process Data ---
+const backgroundData = [
+    { id: 'creatine', category: 'INPUT', label: 'Creatine Monohydrate', details: '5g Daily', instruction: "Essential for ATP regeneration and brain function. Take with water or post-workout carbs." },
+    { id: 'algae', category: 'INPUT', label: 'Algae Oil (DHA/EPA)', details: 'Daily Dose', instruction: "Critical brain fuel for vegetarians. Supports cognitive speed and reduces inflammation." },
+    { id: 'social', category: 'NETWORK', label: 'Social Anchor', details: '1 Interaction', instruction: "One meaningful human interaction before 12:00 PM to regulate circadian rhythm and mood." },
+    { id: 'optic', category: 'OPTIC', label: 'Morning Walk', details: 'Outdoor Light', instruction: "Get forward optic flow (walking) and sunlight within 30 minutes of waking to set sleep clock." }
 ];
 // --- END ADDED ---
 
@@ -162,17 +170,17 @@ const completionOverlay = document.getElementById("completion-overlay");
 const completionTitleEl = document.getElementById("completion-title"); 
 const completionMessage = document.getElementById("completion-message");
 const themeToggleBtn = document.getElementById("theme-toggle-btn");
-// --- ADDED: Boot elements ---
 const bootSequenceBtn = document.getElementById("boot-sequence-btn");
 const bootModalOverlay = document.getElementById("boot-modal-overlay");
 const bootModalCloseBtn = document.getElementById("boot-modal-close-btn");
 const bootList = document.getElementById("boot-list");
-// --- END ADDED ---
+const backgroundList = document.getElementById("background-list"); // ADDED
 
 // State
 let progress = {};
 let completedDays = []; 
-let bootStatus = { date: '', items: [] }; // ADDED: Boot status state
+let bootStatus = { date: '', items: [] }; 
+let backgroundStatus = { date: '', items: [] }; // ADDED: Background status
 let longPressTimer;
 const LONG_PRESS_DURATION = 500;
 let activeTimer = null;
@@ -183,7 +191,8 @@ const PROGRESS_KEY = "workoutSysProgress";
 const COMPLETED_DAYS_KEY = "workoutSysCompletedDays"; 
 const TIMER_END_KEY = "restPeriodEndTime";
 const THEME_KEY = "workoutSysTheme";
-const BOOT_KEY = "workoutSysBootStatus"; // ADDED
+const BOOT_KEY = "workoutSysBootStatus"; 
+const BACKGROUND_KEY = "workoutSysBackgroundStatus"; // ADDED
 
 const motivationalMessages = [
     "TASK COMPLETE. AWAITING NEXT INPUT.", "PROCESSING... POSITIVE RESULTS. REST.",
@@ -295,15 +304,15 @@ function saveCompletedDays() {
     } catch (e) { console.error("Could not save completed days:", e); }
 }
 
-// --- ADDED: Boot Sequence Logic ---
+// --- Boot Sequence Logic ---
 function loadBootStatus() {
     try {
         const saved = JSON.parse(localStorage.getItem(BOOT_KEY));
-        const today = new Date().toDateString(); // Use current date string for daily reset
+        const today = new Date().toDateString(); 
         if (saved && saved.date === today) {
             bootStatus = saved;
         } else {
-            bootStatus = { date: today, items: [] }; // Reset if date changed
+            bootStatus = { date: today, items: [] }; 
             saveBootStatus();
         }
     } catch (e) { 
@@ -325,7 +334,7 @@ function toggleBootItem(id) {
         bootStatus.items.push(id);
     }
     saveBootStatus();
-    renderBootList(); // Re-render to update checkboxes
+    renderBootList(); 
     triggerHapticFeedback();
 }
 
@@ -355,16 +364,31 @@ function renderBootList() {
             <div class="boot-details">
                 <div class="boot-label">${item.label}</div>
                 <div class="boot-meta">${item.details}</div>
-                <div class="boot-desc">${item.instruction}</div>
             </div>
+            <button class="info-btn" aria-label="Open instruction for ${item.label}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+            </button>
         `;
         
-        li.addEventListener('click', () => toggleBootItem(item.id));
+        li.addEventListener('click', (e) => {
+            if (e.target.closest('.info-btn')) return;
+            toggleBootItem(item.id)
+        });
+
+        const infoBtn = li.querySelector('.info-btn');
+        infoBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            openInfoModal(item.label, item.instruction);
+        });
+
         bootList.appendChild(li);
     });
 }
 
-// --- Modal Logic for Boot Sequence ---
 function openBootModal() {
     bootModalOverlay.classList.remove("hidden");
     bootModalOverlay.setAttribute('aria-hidden', 'false');
@@ -372,6 +396,78 @@ function openBootModal() {
 function closeBootModal() {
     bootModalOverlay.classList.add("hidden");
     bootModalOverlay.setAttribute('aria-hidden', 'true');
+}
+
+// --- ADDED: Background Process Logic (similar to Boot Sequence) ---
+function loadBackgroundStatus() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(BACKGROUND_KEY));
+        const today = new Date().toDateString(); 
+        if (saved && saved.date === today) {
+            backgroundStatus = saved;
+        } else {
+            backgroundStatus = { date: today, items: [] }; 
+            saveBackgroundStatus();
+        }
+    } catch (e) { 
+        backgroundStatus = { date: new Date().toDateString(), items: [] }; 
+    }
+    renderBackgroundList();
+}
+
+function saveBackgroundStatus() {
+    localStorage.setItem(BACKGROUND_KEY, JSON.stringify(backgroundStatus));
+}
+
+function toggleBackgroundItem(id) {
+    if (backgroundStatus.items.includes(id)) {
+        backgroundStatus.items = backgroundStatus.items.filter(i => i !== id);
+    } else {
+        backgroundStatus.items.push(id);
+    }
+    saveBackgroundStatus();
+    renderBackgroundList(); 
+    triggerHapticFeedback();
+}
+
+function renderBackgroundList() {
+    backgroundList.innerHTML = '';
+    backgroundData.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'boot-item'; // Reuse boot styles
+        
+        const isChecked = backgroundStatus.items.includes(item.id);
+        
+        li.innerHTML = `
+            <div class="boot-checkbox ${isChecked ? 'checked' : ''}">
+                ${isChecked ? '✓' : ''}
+            </div>
+            <div class="boot-details">
+                <div class="boot-label"><span class="background-category">[${item.category}]</span> ${item.label}</div>
+                <div class="boot-meta">${item.details}</div>
+            </div>
+            <button class="info-btn" aria-label="Open instruction for ${item.label}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+            </button>
+        `;
+        
+        li.addEventListener('click', (e) => {
+            if (e.target.closest('.info-btn')) return;
+            toggleBackgroundItem(item.id)
+        });
+
+        const infoBtn = li.querySelector('.info-btn');
+        infoBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            openInfoModal(item.label, item.instruction);
+        });
+
+        backgroundList.appendChild(li);
+    });
 }
 // --- END ADDED ---
 
@@ -903,7 +999,8 @@ function init() {
     loadTheme(); 
     loadProgress();
     loadCompletedDays(); 
-    loadBootStatus(); // ADDED: Call this on init
+    loadBootStatus(); 
+    loadBackgroundStatus(); // ADDED
     
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') { checkTimerOnFocus(); }
@@ -937,11 +1034,9 @@ function init() {
     themeToggleBtn.setAttribute('aria-label', 'Switch theme'); 
     themeToggleBtn.addEventListener("click", toggleTheme); 
 
-    // --- ADDED: Boot Sequence Interactions ---
     bootSequenceBtn.addEventListener("click", openBootModal);
     bootModalCloseBtn.addEventListener("click", closeBootModal);
     bootModalOverlay.addEventListener("click", e => { if (e.target === bootModalOverlay) closeBootModal(); });
-    // --- END ADDED ---
 
     resetButton.addEventListener("click", openResetModal);
     confirmResetBtn.addEventListener("click", () => {
