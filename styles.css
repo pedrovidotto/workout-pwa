@@ -12,7 +12,8 @@
   --light-text-color: #f2ece7; 
   --light-text-muted: rgba(242, 236, 231, 0.6);
   --light-border-muted: rgba(242, 236, 231, 0.2);
-  --accent-color: #ff5533; 
+  --accent-color: #ff5533; /* Normal Accent */
+  --safe-mode-color: #33ffcc; /* Teal for Safe Mode */
 
   /* UI Element Colors */
   --hover-color: rgba(242, 236, 231, 0.03);
@@ -31,6 +32,7 @@ body[data-theme="light"] {
   --gradient-end: rgba(242, 236, 231, 0); 
   --checkmark-color: var(--text-color); 
   --accent-color: #ff5533; 
+  --safe-mode-color: #00bfa5; /* Darker Teal for Light Mode Safe Mode */
 
   /* UI Element Colors */
   --hover-color: rgba(45, 42, 39, 0.03);
@@ -39,6 +41,11 @@ body[data-theme="light"] {
   --completion-overlay-bg: rgba(45, 42, 39, 0.9); 
 }
 
+/* --- ADDED: Safe Mode Override --- */
+body.safe-mode {
+    --accent-color: var(--safe-mode-color) !important;
+}
+/* --- END ADDED --- */
 
 * {
   box-sizing: border-box;
@@ -240,36 +247,15 @@ header {
 }
 
 .day-btn.day-complete::after {
-    content: '✓';
-    position: absolute;
-    bottom: -2px; 
-    right: 0px;  
-    font-size: 0.7em;
-    line-height: 1;
-    color: var(--checkmark-color); 
-    opacity: 0.7; 
-    transition: color 0.3s ease, opacity 0.3s ease;
-}
-
-.day-btn.day-complete:hover::after,
-.day-btn.day-complete.active::after {
-    opacity: 1;
-}
-
-.day-btn.day-complete.active::after,
-.day-btn.day-complete::after { 
-    color: var(--background-color); 
+    content: ''; 
 }
 
 .day-btn.day-complete:not(.active) {
+    /* Inverted style for inactive completed days */
     background-color: var(--text-color); 
     color: var(--background-color); 
     border-color: var(--text-color);
     font-weight: 500;
-}
-
-.day-btn.day-complete:not(.active)::after {
-     color: var(--background-color);
 }
 
 #theme-toggle-btn svg {
@@ -322,9 +308,6 @@ header {
   border-color: var(--accent-color);     
   color: var(--background-color);       
   font-weight: 500;
-}
-.day-btn.active.day-complete::after {
-     color: var(--background-color); 
 }
 
 
@@ -674,7 +657,6 @@ footer {
     margin-bottom: 2px;
 }
 
-/* --- ADDED: Style for background category tag --- */
 .background-category {
     color: var(--accent-color);
     font-family: 'Inter', monospace;
@@ -682,7 +664,6 @@ footer {
     margin-right: 4px;
     font-weight: 400;
 }
-/* --- END ADDED --- */
 
 .boot-meta {
     font-family: 'Inter', monospace;
