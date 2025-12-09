@@ -2,115 +2,134 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>WORKOUT.SYS</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>LIFE.OS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#2d2a27"> 
+  <meta name="theme-color" content="#111111"> 
 </head>
 <body>
 
-<div class="container">
+<div class="os-container">
 
-  <header>
-    <div class="header-top-row">
-      <h1 class="logo">
-        <img src="logo.svg" alt="Logo" class="logo-svg">
-      </h1>
-      <button id="theme-toggle-btn" class="day-btn" aria-label="Switch Theme">
-          </button>
+  <header class="status-bar">
+    <div class="status-left">
+      <span id="current-date">INITIALIZING...</span>
+      <span class="separator">|</span>
+      <span id="week-indicator">WK 1</span>
     </div>
-
-    <button id="boot-sequence-btn" class="system-btn">
-      <span class="status-dot"></span>
-      <span id="boot-btn-text">INITIALIZE BOOT SEQUENCE</span>
-    </button>
-
-    <hr class="header-divider">
-    
-    <nav id="day-selector"></nav>
+    <div class="status-right">
+      <button id="theme-btn" aria-label="Toggle Theme">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+    </div>
   </header>
 
-  <main id="workout-container">
-    <div id="workout-header">
-      <h2 id="workout-title"></h2>
-      <p id="workout-duration" class="data-readout"></p>
-    </div>
+  <main id="feed">
 
-    <ul id="exercise-list">
-      </ul>
-
-    <h3 id="completed-title" class="category-title hidden">// COMPLETED</h3>
-    <ul id="completed-list">
-        </ul>
-
-    <div id="background-container">
-        <h3 class="category-title" style="margin-top: 48px;">// BACKGROUND PROCESSES</h3>
-        <ul id="background-list">
+    <section class="block" id="block-wake">
+      <div class="block-header">
+        <div class="time-stamp">06:00</div>
+        <div class="block-title">WAKE & PRIME</div>
+        <div class="block-status" id="status-wake">PENDING</div>
+      </div>
+      <div class="block-content">
+        <ul class="checklist" id="list-wake">
             </ul>
-    </div>
+      </div>
+    </section>
+
+    <section class="block" id="block-workout">
+      <div class="block-header">
+        <div class="time-stamp">07:00</div>
+        <div class="block-title">WORKOUT MODULE</div>
+        <div class="block-status" id="status-workout">READY</div>
+      </div>
+      <div class="block-content">
+        <div class="workout-meta">
+          <span id="workout-day-name">LOADING...</span>
+          <span id="workout-est-time">-- MIN</span>
+        </div>
+        <ul id="exercise-list" class="workout-list">
+            </ul>
+        <div id="rest-message" class="hidden system-msg">
+            // SYSTEM RESTORE: ACTIVE RECOVERY PROTOCOL
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="block-upload">
+      <div class="block-header">
+        <div class="time-stamp">08:30</div>
+        <div class="block-title">UPLOAD & FOCUS</div>
+        <div class="block-status" id="status-upload">PENDING</div>
+      </div>
+      <div class="block-content">
+        <ul class="checklist" id="list-upload">
+            </ul>
+      </div>
+    </section>
+
+    <section class="block" id="block-recovery">
+      <div class="block-header">
+        <div class="time-stamp">18:30</div>
+        <div class="block-title">RECOVERY & SHUTDOWN</div>
+        <div class="block-status" id="status-recovery">PENDING</div>
+      </div>
+      <div class="block-content">
+        <ul class="checklist" id="list-recovery">
+            </ul>
+      </div>
+    </section>
 
   </main>
 
-  <footer>
-    <button id="reset-button" class="btn-secondary">PURGE WEEKLY PROGRESS</button>
+  <footer class="control-deck">
+    <button id="reset-day-btn" class="cmd-btn">SYSTEM RESET</button>
   </footer>
+
 </div>
 
-<div id="timer-display" class="hidden">00:00</div>
-
-<div id="boot-modal-overlay" class="modal-overlay hidden" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
-        <div class="modal-header">
-            <h2 id="boot-modal-title">7:00 AM HARDWARE CHECK</h2>
-            <button id="boot-modal-close-btn" class="btn-icon" aria-label="Close">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-        </div>
-        <div class="divider"></div>
-        <p class="modal-body-text">Decompress the "Morning Spine" before heavy load.</p>
-        <ul id="boot-list"></ul>
-    </div>
+<div id="timer-overlay" class="hidden">
+  <div class="timer-card">
+    <span id="timer-val">00:00</span>
+    <button id="timer-cancel">STOP</button>
+  </div>
 </div>
 
-<div id="info-modal-overlay" class="modal-overlay hidden" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
-        <div class="modal-header">
-            <h2 id="info-modal-title">Exercise Title</h2>
-            <button id="info-modal-close-btn" class="btn-icon" aria-label="Close">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-        </div>
-        <div class="divider"></div>
-        <div id="info-modal-instructions"></div>
-    </div>
+<div id="info-modal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <h3 id="modal-title">TITLE</h3>
+    <div class="modal-divider"></div>
+    <p id="modal-desc">Description goes here.</p>
+    <button id="modal-close-btn" class="modal-action-btn">CLOSE</button>
+  </div>
 </div>
 
-<div id="reset-modal-overlay" class="modal-overlay hidden" aria-hidden="true">
-    <div id="reset-modal" class="modal" role="dialog" aria-modal="true">
-        <div class="modal-header">
-            <h2 id="reset-modal-title">CONFIRM ACTION</h2>
+<div id="reset-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+        <h3>CONFIRM RESET</h3>
+        <div class="modal-divider"></div>
+        <p>This will purge all daily progress and increment the week counter. Proceed?</p>
+        <div class="modal-actions">
+            <button id="confirm-reset" class="modal-action-btn danger">PURGE</button>
+            <button id="cancel-reset" class="modal-action-btn secondary">CANCEL</button>
         </div>
-        <div class="divider"></div>
-        <p class="modal-body-text">Purge all weekly progress data? This action is irreversible.</p>
-        <div class="modal-buttons">
-            <button id="confirm-reset-btn" class="btn-primary">CONFIRM PURGE</button>
-            <button id="cancel-reset-btn" class="btn-secondary">CANCEL</button>
-        </div>
-    </div>
-</div>
-
-<div id="completion-overlay" class="hidden">
-    <div id="completion-card">
-        <h2 id="completion-title"></h2>
-        <p id="completion-message"></p>
     </div>
 </div>
 
