@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>WORKOUT.SYS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
       <h1 class="logo">
         <img src="logo.svg" alt="Logo" class="logo-svg">
       </h1>
-      <button id="theme-toggle-btn" class="day-btn" aria-label="Toggle Theme">
+      <button id="theme-toggle-btn" class="day-btn" aria-label="Switch Theme">
           </button>
     </div>
 
@@ -44,14 +44,17 @@
       <p id="workout-duration" class="data-readout"></p>
     </div>
 
-    <ul id="exercise-list"></ul>
+    <ul id="exercise-list">
+      </ul>
 
     <h3 id="completed-title" class="category-title hidden">// COMPLETED</h3>
-    <ul id="completed-list"></ul>
+    <ul id="completed-list">
+        </ul>
 
     <div id="background-container">
         <h3 class="category-title" style="margin-top: 48px;">// BACKGROUND PROCESSES</h3>
-        <ul id="background-list"></ul>
+        <ul id="background-list">
+            </ul>
     </div>
 
   </main>
@@ -67,10 +70,12 @@
     <div class="modal" role="dialog" aria-modal="true">
         <div class="modal-header">
             <h2 id="boot-modal-title">7:00 AM HARDWARE CHECK</h2>
-            <button class="modal-close-btn btn-icon"><svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            <button id="boot-modal-close-btn" class="btn-icon" aria-label="Close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
         </div>
         <div class="divider"></div>
-        <p class="modal-body-text" style="margin-bottom: 16px;">Decompress the "Morning Spine" before heavy load.</p>
+        <p class="modal-body-text">Decompress the "Morning Spine" before heavy load.</p>
         <ul id="boot-list"></ul>
     </div>
 </div>
@@ -79,7 +84,9 @@
     <div class="modal" role="dialog" aria-modal="true">
         <div class="modal-header">
             <h2 id="info-modal-title">Exercise Title</h2>
-            <button class="modal-close-btn btn-icon"><svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            <button id="info-modal-close-btn" class="btn-icon" aria-label="Close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
         </div>
         <div class="divider"></div>
         <div id="info-modal-instructions"></div>
