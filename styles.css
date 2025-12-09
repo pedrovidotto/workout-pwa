@@ -1,754 +1,210 @@
-/* 1. ROOT & GLOBAL STYLES */
+/* 1. ROOT & GLOBAL VARIABLES */
 :root {
-  /* DEFAULT THEME (DARK) */
-  --background-color: #2d2a27;
+  /* DARK THEME (Default) */
+  --bg-color: #2d2a27;
   --text-color: #f2ece7;
-  --border-color: rgba(242, 236, 231, 0.4);
-  --border-color-muted: rgba(242, 236, 231, 0.2);
-  --text-color-muted: rgba(242, 236, 231, 0.6);
-  --gradient-start: #2d2a27; 
-  --gradient-end: rgba(45, 42, 39, 0); 
-  --checkmark-color: var(--text-color); 
-  --light-text-color: #f2ece7; 
-  --light-text-muted: rgba(242, 236, 231, 0.6);
-  --light-border-muted: rgba(242, 236, 231, 0.2);
-  --accent-color: #ff5533; /* Normal Accent */
-  --safe-mode-color: #33ffcc; /* Teal for Safe Mode */
-
-  /* UI Element Colors */
-  --hover-color: rgba(242, 236, 231, 0.03);
-  --hover-color-icon: rgba(242, 236, 231, 0.1);
-  --modal-overlay-bg: rgba(0, 0, 0, 0.8);
-  --completion-overlay-bg: rgba(0, 0, 0, 0.9);
+  --text-muted: rgba(242, 236, 231, 0.6);
+  --border: rgba(242, 236, 231, 0.4);
+  --border-muted: rgba(242, 236, 231, 0.2);
+  
+  /* ACCENTS */
+  --accent-color: #ff5533; /* Orange */
+  --safe-mode-color: #33ffcc; /* Teal */
+  
+  /* UI ELEMENTS */
+  --hover-bg: rgba(242, 236, 231, 0.03);
+  --modal-overlay: rgba(0, 0, 0, 0.85);
+  
+  /* FIXED COLORS (For Overlay Contrast) */
+  --light-fixed: #f2ece7;
+  --muted-fixed: rgba(242, 236, 231, 0.6);
+  
+  /* GRADIENT */
+  --grad-start: #2d2a27;
+  --grad-end: rgba(45, 42, 39, 0);
 }
 
+/* LIGHT THEME OVERRIDES */
 body[data-theme="light"] {
-  --background-color: #f2ece7;
+  --bg-color: #f2ece7;
   --text-color: #2d2a27;
-  --border-color: rgba(45, 42, 39, 0.4);
-  --border-color-muted: rgba(45, 42, 39, 0.2);
-  --text-color-muted: rgba(45, 42, 39, 0.6);
-  --gradient-start: #f2ece7; 
-  --gradient-end: rgba(242, 236, 231, 0); 
-  --checkmark-color: var(--text-color); 
-  --accent-color: #ff5533; 
-  --safe-mode-color: #00bfa5; /* Darker Teal for Light Mode Safe Mode */
+  --text-muted: rgba(45, 42, 39, 0.6);
+  --border: rgba(45, 42, 39, 0.4);
+  --border-muted: rgba(45, 42, 39, 0.2);
+  
+  /* UI ELEMENTS */
+  --hover-bg: rgba(45, 42, 39, 0.05);
+  --modal-overlay: rgba(45, 42, 39, 0.85);
 
-  /* UI Element Colors */
-  --hover-color: rgba(45, 42, 39, 0.03);
-  --hover-color-icon: rgba(45, 42, 39, 0.1);
-  --modal-overlay-bg: rgba(45, 42, 39, 0.8);
-  --completion-overlay-bg: rgba(45, 42, 39, 0.9); 
+  /* GRADIENT */
+  --grad-start: #f2ece7;
+  --grad-end: rgba(242, 236, 231, 0);
 }
 
-/* --- ADDED: Safe Mode Override --- */
+/* SAFE MODE OVERRIDE (Higher Specificity) */
 body.safe-mode {
-    --accent-color: var(--safe-mode-color) !important;
-}
-/* --- END ADDED --- */
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  --accent-color: var(--safe-mode-color) !important;
 }
 
-html {
-  background-color: var(--background-color);
-  transition: background-color 0.3s ease;
-}
+/* 2. CORE LAYOUT */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { background-color: var(--bg-color); transition: background 0.3s ease; }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
   color: var(--text-color);
-  background-color: var(--background-color);
+  background-color: var(--bg-color);
   line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  padding-top: env(safe-area-inset-top);
   font-weight: 300;
-  transition: color 0.3s ease, background-color 0.3s ease;
-  position: relative; 
+  padding-top: env(safe-area-inset-top);
+  transition: all 0.3s ease;
 }
 
+/* Top Fade Gradient */
 body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px; 
-  background: linear-gradient(to bottom, var(--gradient-start) 60%, var(--gradient-end));
-  z-index: 10; 
-  pointer-events: none; 
-  transition: background 0.3s ease;
+  content: ''; position: fixed; top: 0; left: 0; right: 0; height: 60px;
+  background: linear-gradient(to bottom, var(--grad-start) 60%, var(--grad-end));
+  z-index: 10; pointer-events: none; transition: background 0.3s ease;
 }
 
-/* 2. TYPOGRAPHY & HEADER */
-h1, h2, h3 {
-  font-weight: 500;
-  margin-bottom: 0.5em;
+.container { max-width: 600px; margin: 0 auto; padding: 16px; position: relative; z-index: 1; }
+.hidden { display: none !important; }
+
+/* 3. HEADER & LOGO */
+.header-top-row { display: flex; justify-content: space-between; align-items: center; }
+.logo { display: flex; align-items: center; }
+.logo-svg { width: 128px; height: 128px; transition: filter 0.3s ease; }
+body[data-theme="light"] .logo-svg { filter: invert(1); }
+
+.header-divider { border: none; height: 1px; background: var(--border-muted); margin: 24px 0; }
+.divider { width: 100%; height: 1px; background: var(--border-muted); margin: 20px 0; }
+
+/* 4. BUTTONS & INPUTS */
+.day-btn, .btn-secondary, .system-btn, .btn-primary {
+  cursor: pointer; font-family: 'Inter', monospace; transition: all 0.2s ease;
 }
+
+/* Day Selector Buttons */
+#day-selector { display: flex; justify-content: space-between; gap: 4px; }
+
+.day-btn {
+  background: transparent; color: var(--text-muted);
+  border: 1px solid var(--border-muted); border-radius: 50%;
+  width: 40px; height: 40px; 
+  display: flex; justify-content: center; align-items: center;
+  font-size: 0.8rem; text-transform: uppercase; position: relative; overflow: hidden;
+}
+
+.day-btn:hover { border-color: var(--accent-color); color: var(--text-color); }
+
+/* Active Day (Solid Accent) */
+.day-btn.active {
+  background: var(--accent-color); border-color: var(--accent-color);
+  color: var(--bg-color); font-weight: 500;
+}
+
+/* Completed Day (Inverted style: Text Color BG, BG Color Text) */
+.day-btn.day-complete:not(.active) {
+  background: var(--text-color); color: var(--bg-color); border-color: var(--text-color); font-weight: 500;
+}
+/* Completed Active Day (Inherits Accent, fix checkmark color) */
+.day-btn.active.day-complete::after { color: var(--bg-color); }
 
 /* Boot Sequence Button */
 .system-btn {
-  display: block; 
-  width: 100%;
-  margin-bottom: 24px;
-  background: transparent;
-  border: 1px solid var(--border-color-muted);
-  color: var(--text-color-muted);
-  padding: 12px 16px;
-  font-family: 'Inter', monospace; 
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  width: 100%; background: transparent; color: var(--text-muted);
+  border: 1px solid var(--border-muted); border-radius: 8px;
+  padding: 12px; margin-top: 24px;
+  display: flex; justify-content: center; align-items: center; gap: 10px;
+  font-size: 0.85rem; letter-spacing: 0.05em;
 }
+.system-btn:hover { border-color: var(--accent-color); color: var(--text-color); }
+.system-btn.complete { background: var(--accent-color); border-color: var(--accent-color); color: var(--bg-color); font-weight: 500; }
 
-.system-btn:hover {
-  border-color: var(--accent-color);
-  color: var(--text-color);
-}
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); }
+.system-btn:hover .status-dot { background: var(--accent-color); }
+.system-btn.complete .status-dot { background: var(--bg-color); }
 
-.system-btn.complete {
-  background-color: var(--accent-color);
-  border-color: var(--accent-color);
-  color: var(--background-color); 
-  font-weight: 500;
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--text-color-muted);
-  transition: background-color 0.3s ease;
-}
-
-.system-btn:hover .status-dot {
-  background-color: var(--accent-color);
-}
-
-.system-btn.complete .status-dot {
-  background-color: var(--background-color); 
-}
-
-
-.header-top-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 0px; 
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 0;
-  margin-top: 0;
-}
-
-.logo-svg {
-  width: 128px;
-  height: 128px;
-  filter: invert(0);
-  transition: filter 0.3s ease;
-}
-
-body[data-theme="light"] .logo-svg {
-  filter: invert(1);
-}
-
-.header-divider {
-    border: none;
-    height: 1px;
-    background-color: var(--border-color-muted);
-    margin-top: 24px;
-    margin-bottom: 24px;
-    transition: background-color 0.3s ease;
-}
-
-.data-readout {
-  font-family: 'Inter', monospace;
-  font-size: 0.8rem;
-  color: var(--text-color-muted);
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  font-weight: 300;
-  transition: color 0.3s ease;
-}
-
-.divider {
-  width: 100%;
-  height: 1px;
-  background-color: var(--border-color-muted);
-  margin: 20px 0;
-  transition: background-color 0.3s ease;
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* 3. LAYOUT */
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 16px;
-  position: relative;
-  z-index: 1; 
-}
-
-header {
-  margin-bottom: 0;
-}
-
-#day-selector {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-/* 4. BUTTONS */
-
-.day-btn { 
-  background-color: transparent;
-  color: var(--text-color-muted);
-  border: 1px solid var(--border-color-muted);
-  border-radius: 50%;
-  padding: 0;
-  cursor: pointer;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 400;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  position: relative;
-  overflow: hidden; 
-  z-index: 1;
-  width: 40px; 
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.day-btn.day-complete::after {
-    content: ''; 
-}
-
-.day-btn.day-complete:not(.active) {
-    /* Inverted style for inactive completed days */
-    background-color: var(--text-color); 
-    color: var(--background-color); 
-    border-color: var(--text-color);
-    font-weight: 500;
-}
-
-#theme-toggle-btn svg {
-    display: block;
-}
-#theme-toggle-btn .svg-bg-circle {
-    fill: var(--background-color);
-    stroke: var(--border-color-muted);
-    stroke-width: 1.5;
-    transition: fill 0.3s ease, stroke 0.3s ease;
-}
-#theme-toggle-btn .svg-fg-circle {
-    fill: var(--text-color);
-    stroke: var(--border-color-muted);
-    stroke-width: 1.5;
-    transition: fill 0.3s ease, stroke 0.3s ease;
-}
-
-
+/* Reset Button */
 .btn-secondary {
-  background-color: transparent;
-  color: var(--text-color-muted);
-  border: 1px solid var(--border-color-muted);
-  border-radius: 16px;
-  padding: 8px 18px;
-  cursor: pointer;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 400;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
+  width: 100%; background: transparent; color: var(--text-muted);
+  border: 1px solid var(--border-muted); border-radius: 12px;
+  padding: 12px; font-size: 0.8rem; letter-spacing: 0.05em;
 }
+.btn-secondary:hover { color: var(--text-color); border-color: var(--border); }
 
-#theme-toggle-btn:hover,
-.day-btn:hover,
-.btn-secondary:hover {
-  color: var(--text-color);
-  border-color: var(--border-color);
+/* Theme Toggle */
+#theme-toggle-btn svg { display: block; }
+#theme-toggle-btn .bg { fill: var(--bg-color); stroke: var(--border-muted); stroke-width: 1.5; transition: 0.3s; }
+#theme-toggle-btn .fg { fill: var(--text-color); stroke: var(--border-muted); stroke-width: 1.5; transition: 0.3s; }
+#theme-toggle-btn:hover .bg, #theme-toggle-btn:hover .fg { stroke: var(--border); }
+
+/* 5. WORKOUT & EXERCISE LIST */
+#workout-header { margin-bottom: 24px; }
+#workout-title { font-family: 'Inter', sans-serif; font-size: 3.5rem; font-weight: 300; line-height: 1.1; letter-spacing: -0.03em; }
+#workout-title span { font-weight: 100; margin-right: 5px; }
+#workout-duration { font-family: 'Inter', monospace; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-top: 8px;}
+
+ul { list-style: none; }
+.category-title { margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border-muted); color: var(--text-muted); font-size: 0.8rem; letter-spacing: 0.05em; }
+
+.exercise-item, .ab-finisher, .cardio-session, .boot-item {
+  display: flex; align-items: center; gap: 16px; padding: 20px 0;
+  border-bottom: 1px solid var(--border-muted); position: relative;
+  transition: all 0.2s ease; cursor: pointer; user-select: none;
 }
-#theme-toggle-btn:hover svg circle {
-    stroke: var(--border-color);
+.exercise-item:hover, .boot-item:hover { background-color: var(--hover-bg); }
+li:last-child { border-bottom: none; }
+
+/* Active Indicator Bar */
+.exercise-active::before {
+  content: ''; position: absolute; left: 0; top: 20px; bottom: 20px; width: 3px;
+  background: var(--accent-color); border-radius: 2px; animation: fadeIn 0.3s;
 }
+@keyframes fadeIn { from { opacity: 0; transform: scaleY(0.5); } to { opacity: 1; transform: scaleY(1); } }
 
-.day-btn.active {
-  background-color: var(--accent-color); 
-  border-color: var(--accent-color);     
-  color: var(--background-color);       
-  font-weight: 500;
-}
+/* Completed Items */
+#completed-list li { opacity: 0.4; }
+.reordering { opacity: 0; transform: translateY(10px); }
 
+/* Text & Details */
+.exercise-details, .boot-details { flex-grow: 1; pointer-events: none; }
+h3, .boot-label { font-size: 1.05rem; font-weight: 400; margin-bottom: 4px; line-height: 1.3; }
+p, .boot-meta { color: var(--text-muted); font-size: 0.85rem; font-weight: 300; line-height: 1.4; }
+.background-category { color: var(--accent-color); font-family: 'Inter', monospace; font-size: 0.75rem; margin-right: 6px; }
 
-.btn-primary { 
-  background-color: var(--text-color);
-  color: var(--background-color);
-  border: 1px solid var(--text-color);
-  border-radius: 16px;
-  padding: 8px 18px;
-  cursor: pointer;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  transition: all 0.2s ease;
-}
+/* Counters & Icons */
+.set-counter { font-family: 'Inter', monospace; font-size: 1.8rem; font-weight: 300; color: var(--text-muted); padding: 0 12px 0 0; }
+.set-counter.sets-complete { color: var(--accent-color); font-weight: 400; }
 
-.btn-primary:hover {
-  background-color: transparent;
-  color: var(--text-color);
-}
+.info-btn { background: transparent; border: none; color: var(--text-muted); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.info-btn:hover { background: var(--hover-bg); color: var(--text-color); }
 
-#confirm-reset-btn {
-  background-color: var(--accent-color);
-  border-color: var(--accent-color);
-  color: var(--background-color); 
-}
+.boot-checkbox { width: 24px; height: 24px; border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--bg-color); transition: 0.2s; }
+.boot-checkbox.checked { background: var(--accent-color); border-color: var(--accent-color); }
 
-#confirm-reset-btn:hover {
-  background-color: transparent;
-  color: var(--accent-color); 
-  border-color: var(--accent-color);
-}
-
-
-.btn-icon {
-  background: transparent;
-  border: none;
-  color: var(--text-color-muted);
-  cursor: pointer;
-  padding: 4px;
-  transition: color 0.2s ease;
-  line-height: 1;
-}
-.btn-icon:hover {
-  color: var(--text-color);
-}
-
-/* 5. WORKOUT MODULE */
-#workout-container {
-  margin-top: 40px;
-}
-
-#workout-header {
-  text-align: left;
-  margin-bottom: 24px;
-}
-
-#workout-title {
-  font-size: 4rem;
-  font-weight: 300;
-  margin-bottom: 12px;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  color: var(--text-color);
-  transition: color 0.3s ease;
-}
-
-#workout-title .workout-day-num {
-  font-weight: 100;
-  margin-right: 0.05em;
-}
-
-#workout-duration {
-    margin-bottom: 32px;
-}
-
-
-#exercise-list,
-#completed-list {
-  list-style: none;
-}
-
-.category-title {
-  margin-top: 32px;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-color-muted);
-  color: var(--text-color-muted);
-  font-size: 0.8rem;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  transition: color 0.3s ease, border-color 0.3s ease;
-}
-#exercise-list > .category-title:first-of-type {
-    margin-top: 0;
-}
-#completed-title {
-    margin-top: 48px;
-    color: var(--text-color);
-    font-weight: 500;
-}
-
-
-/* Exercise Item Styling */
-.exercise-item,
-.ab-finisher,
-.cardio-session {
-  border-bottom: 1px solid var(--border-color-muted);
-  padding: 20px 0;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  transition: opacity 0.5s ease-out, transform 0.3s ease-out, background-color 0.2s ease, border-color 0.3s ease;
-  cursor: pointer;
-  position: relative;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-#exercise-list > li:last-child,
-#completed-list > li:last-child {
-    border-bottom: none;
-}
-
-
-#exercise-list .exercise-item:hover,
-#exercise-list .ab-finisher:hover,
-#exercise-list .cardio-session:hover {
-  background-color: var(--hover-color);
-}
-
-#completed-list .exercise-item,
-#completed-list .ab-finisher,
-#completed-list .cardio-session {
-    opacity: 0.4;
-    cursor: default;
-    user-select: none;
-}
-#completed-list .exercise-item:hover,
-#completed-list .ab-finisher:hover,
-#completed-list .cardio-session:hover {
-    background-color: transparent;
-}
-
-.exercise-item.reordering,
-.ab-finisher.reordering,
-.cardio-session.reordering {
-  opacity: 0 !important;
-  transform: translateY(10px);
-}
-
-.exercise-item.exercise-active::before,
-.ab-finisher.exercise-active::before,
-.cardio-session.exercise-active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 20px;
-    bottom: 20px;
-    width: 3px;
-    background-color: var(--accent-color); 
-    border-radius: 1.5px;
-    animation: fadeInBar 0.3s ease-out;
-    transition: background-color 0.3s ease;
-}
-
-@keyframes fadeInBar {
-    from { opacity: 0; transform: scaleY(0.5); }
-    to { opacity: 1; transform: scaleY(1); }
-}
-
-
-.exercise-details {
-  flex-grow: 1;
-  pointer-events: none;
-}
-
-.exercise-details h3 {
-  font-size: 1.05rem;
-  font-weight: 400;
-  margin-bottom: 4px;
-  color: var(--text-color);
-  line-height: 1.3;
-  transition: color 0.3s ease;
-}
-
-.exercise-details p {
-  color: var(--text-color-muted);
-  font-size: 0.8rem;
-  font-weight: 300;
-  line-height: 1.4;
-  transition: color 0.3s ease;
-}
-
-.set-counter {
-    font-family: 'Inter', monospace;
-    font-size: 1.8rem;
-    font-weight: 300;
-    color: var(--text-color-muted);
-    background-color: transparent;
-    padding: 0;
-    border-radius: 0;
-    margin-left: 12px;
-    margin-right: 0;
-    white-space: nowrap;
-    transition: color 0.3s;
-    line-height: 1;
-    flex-shrink: 0;
-}
-
-.set-counter.sets-complete {
-    color: var(--accent-color); 
-    background-color: transparent;
-    font-weight: 400; 
-}
-
-
-.info-btn {
-  flex-shrink: 0;
-  background-color: transparent;
-  color: var(--text-color-muted);
-  border: none;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  z-index: 5;
-  pointer-events: auto !important;
-  user-select: auto !important;
-  margin-left: auto;
-}
-
-.info-btn:hover {
-  background-color: var(--hover-color-icon);
-  color: var(--text-color);
-}
-
-/* 6. FOOTER */
-footer {
-  text-align: center;
-  margin-top: 64px;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-.footer-label {
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: var(--text-color-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  margin-bottom: 12px;
-}
-
-/* 7. MODALS (Boot & Reset) */
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background-color: var(--modal-overlay-bg);
-  backdrop-filter: blur(5px);
-  display: flex; justify-content: center; align-items: center;
-  z-index: 1000; opacity: 1; transition: opacity 0.3s ease-in-out, background-color 0.3s ease;
-  padding: 15px;
-}
-
-.modal {
-  background-color: var(--background-color);
-  padding: 24px; border-radius: 12px;
-  border: 1px solid var(--border-color-muted);
-  max-width: 500px; width: 100%;
-  position: relative; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-  transform: scale(1); transition: transform 0.3s ease-in-out, background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.modal-overlay.hidden { opacity: 0; pointer-events: none; }
-.modal-overlay.hidden .modal { transform: scale(0.95); }
-
+/* 6. MODALS & OVERLAYS */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); backdrop-filter: blur(5px); z-index: 1000; display: flex; justify-content: center; align-items: center; }
+.modal { background: var(--bg-color); border: 1px solid var(--border-muted); padding: 24px; border-radius: 12px; width: 100%; max-width: 500px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 
-#info-modal-title { 
-  font-family: 'Instrument Serif', serif; 
-  font-size: 1.8rem; 
-  font-weight: 400; 
-  margin-bottom: 0; 
-  letter-spacing: 0.01em; 
-  text-transform: none; 
-  line-height: 1.3; 
-}
+#info-modal-title { font-family: 'Instrument Serif', serif; font-size: 2rem; font-weight: 400; line-height: 1.2; text-transform: none; }
+#boot-modal-title, #reset-modal-title { font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 
-/* Boot & Background Modal Styles */
-#boot-modal-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
+/* Confirmation Buttons */
+#confirm-reset-btn { background: var(--accent-color); border: 1px solid var(--accent-color); color: var(--bg-color); padding: 10px 20px; border-radius: 8px; font-weight: 600; }
+#confirm-reset-btn:hover { background: transparent; color: var(--accent-color); }
+#cancel-reset-btn { background: transparent; border: 1px solid var(--border-muted); color: var(--text-muted); padding: 10px 20px; border-radius: 8px; margin-left: 10px; }
 
-#boot-list, #background-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+/* Completion Overlay */
+#completion-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 2000; display: flex; justify-content: center; align-items: center; }
+#completion-card { padding: 40px; border: 1px solid var(--border-muted); border-radius: 16px; text-align: left; }
+#completion-title { color: var(--light-fixed); font-size: 1.2rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+#completion-message { color: var(--muted-fixed); font-weight: 300; }
 
-.boot-item {
-    display: flex;
-    align-items: flex-start;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--border-color-muted);
-    cursor: pointer;
-    gap: 16px;
-}
-.boot-item:last-child {
-    border-bottom: none;
-}
+/* Timer */
+#timer-display { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%); background: var(--text-color); color: var(--bg-color); padding: 8px 24px; border-radius: 30px; font-size: 2.5rem; font-weight: 300; z-index: 900; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
 
-.boot-checkbox {
-    width: 24px;
-    height: 24px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--background-color); 
-    transition: all 0.2s ease;
-}
-
-.boot-checkbox.checked {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
-}
-
-.boot-details {
-    flex-grow: 1;
-}
-
-.boot-label {
-    font-weight: 500;
-    font-size: 0.95rem;
-    margin-bottom: 2px;
-}
-
-.background-category {
-    color: var(--accent-color);
-    font-family: 'Inter', monospace;
-    font-size: 0.8em;
-    margin-right: 4px;
-    font-weight: 400;
-}
-
-.boot-meta {
-    font-family: 'Inter', monospace;
-    font-size: 0.8rem;
-    color: var(--text-color-muted);
-    text-transform: uppercase;
-    margin-bottom: 4px;
-}
-
-.boot-desc {
-    font-size: 0.85rem;
-    color: var(--text-color-muted);
-    line-height: 1.4;
-}
-
-
-#reset-modal-title {
-  font-family: 'Inter', sans-serif; 
-  font-size: 1.1rem;
-  font-weight: 500;
-  text-transform: uppercase; 
-  margin-bottom: 0;
-}
-
-
-#info-modal-instructions p, #info-modal-instructions {
-  font-weight: 300; color: var(--text-color); white-space: pre-wrap;
-  max-height: 60vh; overflow-y: auto; font-size: 0.9rem;
-  transition: color 0.3s ease;
-}
-
-.modal-body-text { text-align: left; font-size: 1rem; margin-bottom: 24px; font-weight: 300; }
-.modal-buttons { display: flex; justify-content: flex-start; gap: 15px; }
-
-/* 8. COMPLETION OVERLAY */
-#completion-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background-color: var(--completion-overlay-bg);
-    backdrop-filter: blur(5px);
-    display: flex; justify-content: center; align-items: center;
-    z-index: 2000; opacity: 1; transition: opacity 0.4s ease-in-out, background-color 0.3s ease;
-}
-#completion-overlay.hidden { opacity: 0; pointer-events: none; }
-
-#completion-card {
-    background-color: transparent; padding: 32px; border-radius: 12px;
-    border: 1px solid var(--light-border-muted); 
-    text-align: left;
-    transform: scale(1); 
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
-    max-width: 400px; width: 90%;
-}
-
-#completion-title { 
-    color: var(--light-text-color); 
-    margin-bottom: 8px; font-size: 1.1rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; 
-    transition: color 0.3s ease; 
-}
-#completion-message { 
-    font-weight: 300; 
-    color: var(--light-text-muted); 
-    font-size: 0.9rem; 
-    transition: color 0.3s ease; 
-}
-
-
-/* 9. ON-SCREEN TIMER */
-#timer-display {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--text-color);
-  color: var(--background-color);
-  padding: 8px 20px;
-  border-radius: 20px;
-  font-size: 2.25rem;
-  font-weight: 300;
-  z-index: 999;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-  opacity: 1;
-  transition: opacity 0.3s ease-out, transform 0.3s ease-out, background-color 0.3s ease, color 0.3s ease;
-}
-#timer-display.hidden {
-  opacity: 0;
-  transform: translateX(-50%) translateY(20px);
-  pointer-events: none;
-}
+/* Footer */
+footer { margin-top: 60px; padding-bottom: env(safe-area-inset-bottom); text-align: center; }
