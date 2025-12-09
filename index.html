@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <title>WORKOUT.SYS</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
       <h1 class="logo">
         <img src="logo.svg" alt="Logo" class="logo-svg">
       </h1>
-      <button id="theme-toggle-btn" class="day-btn">
+      <button id="theme-toggle-btn" class="day-btn" aria-label="Toggle Theme">
           </button>
     </div>
 
@@ -34,6 +34,7 @@
     </button>
 
     <hr class="header-divider">
+    
     <nav id="day-selector"></nav>
   </header>
 
@@ -43,19 +44,17 @@
       <p id="workout-duration" class="data-readout"></p>
     </div>
 
-    <ul id="exercise-list">
-      </ul>
+    <ul id="exercise-list"></ul>
 
     <h3 id="completed-title" class="category-title hidden">// COMPLETED</h3>
-    <ul id="completed-list">
-        </ul>
+    <ul id="completed-list"></ul>
 
     <div id="background-container">
-        <h3 class="category-title">// BACKGROUND PROCESSES</h3>
-        <ul id="background-list">
-            </ul>
+        <h3 class="category-title" style="margin-top: 48px;">// BACKGROUND PROCESSES</h3>
+        <ul id="background-list"></ul>
     </div>
-    </main>
+
+  </main>
 
   <footer>
     <button id="reset-button" class="btn-secondary">PURGE WEEKLY PROGRESS</button>
@@ -65,37 +64,30 @@
 <div id="timer-display" class="hidden">00:00</div>
 
 <div id="boot-modal-overlay" class="modal-overlay hidden" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="boot-modal-title">
+    <div class="modal" role="dialog" aria-modal="true">
         <div class="modal-header">
             <h2 id="boot-modal-title">7:00 AM HARDWARE CHECK</h2>
-            <button id="boot-modal-close-btn" class="btn-icon" aria-label="Close boot modal">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
+            <button class="modal-close-btn btn-icon"><svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
         <div class="divider"></div>
         <p class="modal-body-text" style="margin-bottom: 16px;">Decompress the "Morning Spine" before heavy load.</p>
-        <ul id="boot-list">
-            </ul>
+        <ul id="boot-list"></ul>
     </div>
 </div>
 
 <div id="info-modal-overlay" class="modal-overlay hidden" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="info-modal-title">
+    <div class="modal" role="dialog" aria-modal="true">
         <div class="modal-header">
             <h2 id="info-modal-title">Exercise Title</h2>
-            <button id="info-modal-close-btn" class="btn-icon" aria-label="Close info modal">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
+            <button class="modal-close-btn btn-icon"><svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
         <div class="divider"></div>
-        <div id="info-modal-instructions">
-            <p>Instructions will go here.</p>
-        </div>
+        <div id="info-modal-instructions"></div>
     </div>
 </div>
 
 <div id="reset-modal-overlay" class="modal-overlay hidden" aria-hidden="true">
-    <div id="reset-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="reset-modal-title">
+    <div id="reset-modal" class="modal" role="dialog" aria-modal="true">
         <div class="modal-header">
             <h2 id="reset-modal-title">CONFIRM ACTION</h2>
         </div>
@@ -110,8 +102,8 @@
 
 <div id="completion-overlay" class="hidden">
     <div id="completion-card">
-        <h2 id="completion-title">// SYSTEM: TASK COMPLETE</h2>
-        <p id="completion-message">Processing...</p>
+        <h2 id="completion-title"></h2>
+        <p id="completion-message"></p>
     </div>
 </div>
 
