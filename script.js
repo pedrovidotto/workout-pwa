@@ -1,320 +1,295 @@
-/**
- * LIFE.OS CORE LOGIC
- */
+(function() {
+  'use strict';
 
-// --- 1. DATA CONFIGURATION ---
-const DATA = {
-  boot: [
-    { id: 'skincare', label: 'System Start', sub: 'Skincare Ritual' },
-    { id: 'hang', label: 'Dead Hang', sub: '2 sets x 30s', info: 'Decompress spine before load.' },
-    { id: 'cat', label: 'Cat-Camel', sub: '10 reps slowly', info: 'Lubricate synovial fluid.' },
-    { id: 'optic', label: 'Optic Flow', sub: 'Commute / Walk', info: 'Set circadian rhythm.' }
-  ],
-  upload: [
-    { id: 'smoothie', label: 'Superager Smoothie', sub: 'Protein + Creatine + Algae', info: 'Post-workout brain fuel.' },
-    { id: 'social', label: 'Social Anchor', sub: '1 interaction before noon', info: 'Mood regulation.' }
-  ],
-  recovery: [
-    { id: 'greens', label: 'Leafy Greens', sub: 'Lunch intake', info: 'Fiber & micronutrients.' },
-    { id: 'cook2', label: 'Dinner Prep', sub: 'Cook process #2', info: 'Prepare for sleep.' },
-    { id: 'novelty', label: 'Neuroplasticity', sub: '20m High-Frustration Learning', info: 'Fight subjective aging.' },
-    { id: 'shutdown', label: 'System Shutdown', sub: 'Screens off, bag packed', info: 'Sleep hygiene.' }
-  ]
-};
+  /* ─── Workout Data (From Source PDF) ─── */
+  const workoutData = [
+    { "day": 1, "title": "MONDAY", "exercises": [
+      { "name": "Puxada Alta Polia", "details": "3 × 10-12" },
+      { "name": "Remada Baixa", "details": "3 × 10-12" },
+      { "name": "Supino Inclinado", "details": "3 × 10-12" },
+      { "name": "Crucifixo Inverso", "details": "3 × 12-15" },
+      { "name": "Elevação Lateral", "details": "3 × 12-15" },
+      { "name": "Abdominal", "details": "3 × 15" }
+    ]},
+    { "day": 2, "title": "TUESDAY", "exercises": [
+      { "name": "Elevação Pélvica", "details": "4 × 8-10" },
+      { "name": "Leg Press 45°", "details": "3 × 10-12" },
+      { "name": "Extensão Lombar", "details": "2 × 12-15" },
+      { "name": "Mesa Flexora", "details": "3 × 10-12" },
+      { "name": "Cadeira Abdutora", "details": "3 × 15-20" },
+      { "name": "Panturrilha", "details": "3 × 12-15" },
+      { "name": "Abdominal", "details": "3 × 15" }
+    ]},
+    { "day": 3, "title": "WEDNESDAY", "exercises": [
+      { "name": "Remada Articulada", "details": "3 × 10-12" },
+      { "name": "Puxada Aberta", "details": "2 × 10-12" },
+      { "name": "Desenvolvimento", "details": "3 × 10-12" },
+      { "name": "Elevação Lateral", "details": "4 × 12-15" },
+      { "name": "Tríceps Corda", "details": "3 × 12-15" },
+      { "name": "Abdominal", "details": "3 × 15" }
+    ]},
+    { "day": 4, "title": "THURSDAY", "exercises": [
+      { "name": "Búlgaro", "details": "3 × 8-10" },
+      { "name": "Coice Polia", "details": "3 × 12" },
+      { "name": "Cadeira Extensora", "details": "3 × 12-15" },
+      { "name": "Cadeira Flexora", "details": "3 × 12-15" },
+      { "name": "Panturrilha", "details": "3 × 12-15" },
+      { "name": "Abdominal", "details": "3 × 15" }
+    ]},
+    { "day": 5, "title": "FRIDAY", "exercises": [
+      { "name": "Pullover Polia Alta", "details": "3 × 12-15" },
+      { "name": "Face Pull", "details": "3 × 15" },
+      { "name": "Remada Baixa", "details": "3 × 10-12" },
+      { "name": "Rosca Direta", "details": "3 × 10-12" },
+      { "name": "Tríceps Barra Reta", "details": "3 × 10-12" },
+      { "name": "Abdominal", "details": "3 × 15" }
+    ]},
+    { "day": 6, "title": "SATURDAY", "exercises": [
+      { "name": "Elevação Pélvica", "details": "3 × 8-10" },
+      { "name": "Agachamento", "details": "3 × 10-12" },
+      { "name": "Cadeira Abdutora", "details": "3 × 15-20" },
+      { "name": "Cadeira Extensora", "details": "3 × 12-15" },
+      { "name": "Panturrilha", "details": "3 × 12-15" },
+      { "name": "Abdominal", "details": "3 × 15" }
+    ]},
+    { "day": 7, "title": "SUNDAY", "exercises": [] }
+  ];
 
-// 6-Day Split + Rest Day
-const workoutSchedule = [
-  { day: 1, title: "Chest & Triceps", ex: [ 
-      {n:"Bench Press", d:"4x6-10 | 90s"}, {n:"Incline DB Press", d:"3x8-12 | 90s"}, 
-      {n:"Weighted Dips", d:"3xFail | 75s"}, {n:"Cable Crossover", d:"3x12-15 | 60s"}, {n:"Rope Pushdown", d:"4x10-15 | 60s"} 
-    ]},
-  { day: 2, title: "Back & Biceps", ex: [
-      {n:"Weighted Pull-up", d:"4x8-12 | 90s"}, {n:"Barbell Row", d:"4x8-12 | 90s"}, 
-      {n:"Chest Supp. Row", d:"3x10-15 | 75s"}, {n:"Straight Arm Pull", d:"3x12-15 | 60s"}, {n:"Hammer Curls", d:"3x10-15 | 60s"}
-    ]},
-  { day: 3, title: "Quads & Calves", ex: [
-      {n:"Squat", d:"4x8-12 | 120s"}, {n:"Leg Press", d:"4x10-15 | 90s"}, 
-      {n:"Split Squat", d:"3x10-12 | 75s"}, {n:"Leg Ext", d:"3x15-20 | 60s"}, {n:"Calf Raise", d:"5x10-15 | 45s"}
-    ]},
-  { day: 4, title: "Chest & Shoulders", ex: [
-      {n:"Seated DB Press", d:"4x8-12 | 90s"}, {n:"Lateral Raise", d:"4x12-15 | 60s"}, 
-      {n:"Rev Pec Deck", d:"4x15-20 | 60s"}, {n:"Flat DB Press", d:"3x8-12 | 75s"}, {n:"Cable Fly", d:"3x12-15 | 60s"}
-    ]},
-  { day: 5, title: "Biceps & Triceps", ex: [
-      {n:"Close Grip Bench", d:"4x8-12 | 90s"}, {n:"Barbell Curl", d:"4x8-12 | 75s"}, 
-      {n:"Overhead Ext", d:"3x10-15 | 60s"}, {n:"Incline Curl", d:"3x10-15 | 60s"}, {n:"Pushdown/Curl", d:"3x12-15 | 60s"}
-    ]},
-  { day: 6, title: "Glutes & Hams", ex: [
-      {n:"RDL", d:"4x8-12 | 120s"}, {n:"Hip Thrust", d:"4x8-12 | 90s"}, 
-      {n:"Leg Curl", d:"4x12-15 | 75s"}, {n:"Hip Abduction", d:"4x15-20 | 60s"}, {n:"Kickback", d:"3x15-20 | 45s"}
-    ]},
-  { day: 7, title: "System Defrag", ex: [] } // Rest Day
-];
+  /* ─── State ───────────────────────────────────────────────────── */
+  let progress      = JSON.parse(localStorage.getItem('workoutSysProgress')) || {};
+  let completedDays = JSON.parse(localStorage.getItem('workoutSysCompletedDays')) || [];
+  let lastTouched   = JSON.parse(localStorage.getItem('workoutSysLastTouched')) || {};
+  let activeTimer   = null;
 
-// --- 2. STATE MANAGEMENT ---
-const STATE = {
-  date: new Date().toDateString(),
-  checklist: JSON.parse(localStorage.getItem('sys_checklist')) || {}, // { 'hang': true }
-  workoutProgress: JSON.parse(localStorage.getItem('sys_progress')) || {}, // { 'd1-e0': 2 }
-  weekCount: parseInt(localStorage.getItem('sys_week') || 1),
-  theme: localStorage.getItem('sys_theme') || 'dark',
-  timerEnd: localStorage.getItem('sys_timer')
-};
+  /* ─── Helpers ─────────────────────────────────────────────────── */
+  const parseSets = (details) => {
+    const m = details.match(/^(\d+)\s*[×xX]/);
+    return m ? parseInt(m[1], 10) : 1;
+  };
 
-// Daily Reset Logic
-if (localStorage.getItem('sys_last_date') !== STATE.date) {
-  STATE.checklist = {}; 
-  localStorage.setItem('sys_checklist', JSON.stringify({}));
-  localStorage.setItem('sys_last_date', STATE.date);
-}
+  const save = () => {
+    localStorage.setItem('workoutSysProgress', JSON.stringify(progress));
+    localStorage.setItem('workoutSysLastTouched', JSON.stringify(lastTouched));
+  };
 
-// Save Helpers
-const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
-const isSafeMode = () => STATE.weekCount % 4 === 0;
+  const getMondayOfCurrentWeek = () => {
+    const d = new Date();
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(d.setDate(diff)).toDateString();
+  };
 
-// --- 3. UI CONTROLLER ---
-const UI = {
-  init: () => {
-    // Set Theme
-    document.body.dataset.theme = STATE.theme;
-    
-    // Header Info
-    const dateObj = new Date();
-    document.getElementById('current-date').textContent = `${dateObj.getDate()}/${dateObj.getMonth()+1}`;
-    document.getElementById('week-indicator').textContent = `WK ${STATE.weekCount}`;
-    if (isSafeMode()) {
-        document.documentElement.style.setProperty('--accent', '#33ffcc'); // Teal override
-        document.getElementById('week-indicator').textContent += " [DELOAD]";
+  /* ─── WORKOUT SYSTEM ──────────────────────────────────────────── */
+  function renderWorkout(idx) {
+    const data = workoutData[idx];
+    const list = document.getElementById('exercise-list');
+    const compList = document.getElementById('completed-list');
+    const compSection = document.getElementById('completed-section');
+    const fill = document.getElementById('progress-bar-fill');
+    const progressLabel = document.getElementById('progress-label');
+
+    document.getElementById('workout-title').textContent = data.title;
+
+    list.innerHTML = '';
+    compList.innerHTML = '';
+
+    const items = [...(data.exercises || [])];
+
+    if (items.length === 0) {
+      compSection.classList.add('hidden');
+      fill.parentElement.classList.add('hidden');
+      progressLabel.classList.add('hidden');
+      list.innerHTML = `<li class="rest-day-message"><h3>Rest Day</h3><p>System recovery initiated.</p></li>`;
+      return;
     }
 
-    // Render Lists
-    UI.renderChecklist('list-wake', DATA.boot, 'wake');
-    UI.renderChecklist('list-upload', DATA.upload, 'upload');
-    UI.renderChecklist('list-recovery', DATA.recovery, 'recovery');
-    
-    // Render Workout
-    UI.renderWorkout();
-    
-    // Check Timer
-    Timer.restore();
-    
-    // Open workout block by default if not done
-    const status = document.getElementById('status-workout').textContent;
-    if(status !== 'COMPLETE') document.getElementById('block-workout').classList.add('expanded');
-  },
+    let total = 0, done = 0;
+    const activeNodesData = [];
+    const pendingNodes    = [];
+    const completedNodes  = [];
 
-  renderChecklist: (elId, items, blockName) => {
-    const el = document.getElementById(elId);
-    el.innerHTML = items.map(item => {
-      const isDone = STATE.checklist[item.id];
-      return `
-        <li class="check-item ${isDone ? 'completed' : ''}" onclick="Logic.toggleCheck('${item.id}', '${elId}', '${blockName}')">
-          <div class="check-box">${isDone ? '✓' : ''}</div>
-          <div class="item-text">
-            <span class="item-label">${item.label}</span>
-            <span class="item-sub">${item.sub}</span>
-          </div>
-          ${item.info ? `<div class="info-icon" onclick="event.stopPropagation(); UI.showInfoModal('${item.label}', '${item.info}')">?</div>` : ''}
-        </li>
+    items.forEach((ex, i) => {
+      const id = `d${idx}-e${i}`;
+      const sTotal = parseSets(ex.details);
+      const sCurrent = Math.min(progress[id] || 0, sTotal);
+
+      total += sTotal;
+      done  += sCurrent;
+
+      const li = document.createElement('li');
+      li.className = 'exercise-item';
+      li.innerHTML = `
+        <div class="set-counter ${sCurrent >= sTotal ? 'sets-complete' : ''}">${sCurrent}<span class="slash">/</span>${sTotal}</div>
+        <span class="exercise-name">${ex.name}</span>
+        <div class="exercise-details-text">${ex.details}</div>
       `;
-    }).join('');
-    
-    UI.updateBlockStatus(blockName, items);
-  },
 
-  updateBlockStatus: (blockName, items) => {
-      const allDone = items.every(i => STATE.checklist[i.id]);
-      const statusEl = document.getElementById(`status-${blockName}`);
-      if(statusEl) {
-          statusEl.textContent = allDone ? 'COMPLETE' : 'PENDING';
-          statusEl.className = `block-status ${allDone ? 'done' : ''}`;
+      let pressTimer, isLongPress = false, startX = 0, startY = 0;
+
+      li.addEventListener('pointerdown', (e) => {
+        isLongPress = false;
+        startX = e.clientX; startY = e.clientY;
+        li.setPointerCapture(e.pointerId);
+        pressTimer = setTimeout(() => {
+          isLongPress = true;
+          if (navigator.vibrate) navigator.vibrate(40);
+          const newVal = Math.max(0, (progress[id] || 0) - 1);
+          progress[id] = newVal;
+          lastTouched[id] = Date.now();
+          if (newVal < sTotal && activeTimer) {
+            clearInterval(activeTimer);
+            document.getElementById('timer-display').classList.remove('visible');
+            activeTimer = null;
+          }
+          save();
+          renderWorkout(idx);
+        }, 450);
+      });
+
+      li.addEventListener('pointermove', (e) => {
+        if (Math.abs(e.clientY - startY) > 12 || Math.abs(e.clientX - startX) > 12) clearTimeout(pressTimer);
+      });
+
+      li.addEventListener('pointerup', (e) => {
+        clearTimeout(pressTimer);
+        if (isLongPress) return;
+        const newVal = Math.min(sTotal, (progress[id] || 0) + 1);
+        progress[id] = newVal;
+        lastTouched[id] = Date.now();
+        if (newVal < sTotal) startTimer(60); // 60s hardcoded rest[cite: 11]
+        save();
+        renderWorkout(idx);
+      });
+
+      li.addEventListener('pointercancel', () => clearTimeout(pressTimer));
+      li.addEventListener('contextmenu', (e) => e.preventDefault());
+
+      if (sCurrent >= sTotal) completedNodes.push(li);
+      else if (sCurrent > 0) activeNodesData.push({ node: li, ts: lastTouched[id] || 0 });
+      else pendingNodes.push(li);
+    });
+
+    activeNodesData.sort((a, b) => b.ts - a.ts);
+    activeNodesData.forEach((item, index) => {
+      item.node.classList.add(index === 0 ? 'primary-active' : 'secondary-active');
+      list.appendChild(item.node);
+    });
+    pendingNodes.forEach(node => list.appendChild(node));
+    completedNodes.forEach(node => compList.appendChild(node));
+
+    fill.parentElement.classList.remove('hidden');
+    progressLabel.classList.remove('hidden');
+    fill.style.width = `${(done / total) * 100}%`;
+    progressLabel.textContent = `${done} / ${total} SETS`;
+
+    compSection.classList.toggle('hidden', compList.children.length === 0);
+
+    if (done === total && total > 0 && !completedDays.includes(`day-${idx}`)) {
+      completedDays.push(`day-${idx}`);
+      localStorage.setItem('workoutSysCompletedDays', JSON.stringify(completedDays));
+      document.querySelectorAll('.day-btn')[idx].classList.add('day-complete');
+      showCompletion(data.title);
+    }
+  }
+
+  function startTimer(sec) {
+    if (activeTimer) { clearInterval(activeTimer); activeTimer = null; }
+    const end = Date.now() + sec * 1000;
+    const el = document.getElementById('timer-display');
+    el.classList.add('visible');
+
+    function tick() {
+      const rem = Math.ceil((end - Date.now()) / 1000);
+      if (rem <= 0) {
+        clearInterval(activeTimer);
+        activeTimer = null;
+        el.classList.remove('visible');
+        if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+      } else {
+        el.textContent = `${Math.floor(rem / 60)}:${(rem % 60).toString().padStart(2, '0')}`;
       }
-  },
+    }
+    tick();
+    activeTimer = setInterval(tick, 500);
+  }
 
-  renderWorkout: () => {
-    // 0 = Monday (Fixing JS Sunday=0 issue)
-    let dayIdx = new Date().getDay() - 1;
-    if (dayIdx < 0) dayIdx = 6; 
+  function showCompletion(title) {
+    document.getElementById('completion-message').textContent = `${title} complete.`;
+    const el = document.getElementById('completion-overlay');
+    el.classList.add('visible');
     
-    const wData = workoutSchedule[dayIdx];
-    const isSafe = isSafeMode();
+    // Ghost Click Neutralizer
+    setTimeout(() => {
+      el.onclick = () => {
+        el.classList.remove('visible');
+        el.onclick = null;
+      };
+    }, 150);
+  }
 
-    document.getElementById('workout-day-name').textContent = wData.title.toUpperCase();
-    document.getElementById('workout-est-time').textContent = isSafe ? "DELOAD" : "60 MIN";
+  /* ─── INIT ────────────────────────────────────────────────────── */
+  function init() {
+    const savedWeek = localStorage.getItem('workoutSysCurrentWeek');
+    const currentWeek = getMondayOfCurrentWeek();
     
-    // Rest Day
-    if (wData.ex.length === 0) {
-        document.getElementById('exercise-list').innerHTML = '';
-        document.getElementById('rest-message').classList.remove('hidden');
-        document.getElementById('status-workout').textContent = "REST";
-        return;
+    if (savedWeek && savedWeek !== currentWeek) {
+      ['workoutSysProgress','workoutSysCompletedDays','workoutSysLastTouched'].forEach(k => localStorage.removeItem(k));
+      progress = {}; completedDays = []; lastTouched = {};
+      localStorage.setItem('workoutSysCurrentWeek', currentWeek);
+    } else if (!savedWeek) {
+      localStorage.setItem('workoutSysCurrentWeek', currentWeek);
     }
 
-    const listEl = document.getElementById('exercise-list');
-    listEl.innerHTML = wData.ex.map((ex, i) => {
-        const id = `d${dayIdx}-e${i}`;
-        // Parse sets: "4x..." -> 4. Safe mode = 1.
-        const targetSets = isSafe ? 1 : parseInt(ex.d.match(/^(\d+)/)[0]); 
-        const doneSets = STATE.workoutProgress[id] || 0;
-        const isDone = doneSets >= targetSets;
-        
-        return `
-            <li class="ex-item ${isDone ? 'done' : ''}" id="row-${id}" onclick="Logic.modSet('${id}', ${targetSets}, 1, '${ex.d}')" oncontextmenu="Logic.modSet('${id}', ${targetSets}, -1); return false;">
-                <div class="ex-info">
-                    <h4>${ex.n}</h4>
-                    <p>${ex.d}</p>
-                </div>
-                <div class="ex-counter ${isDone ? 'done' : ''}">${doneSets}/${targetSets}</div>
-            </li>
-        `;
-    }).join('');
+    const daySel = document.getElementById('day-selector');
+
+    ['MO','TU','WE','TH','FR','SA','SU'].forEach((l, i) => {
+      const b = document.createElement('button');
+      b.className = 'day-btn';
+      b.setAttribute('role', 'tab');
+      b.textContent = l;
+      if (completedDays.includes(`day-${i}`)) b.classList.add('day-complete');
+      b.addEventListener('click', () => {
+        if (navigator.vibrate) navigator.vibrate(15);
+        document.querySelectorAll('.day-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        renderWorkout(i);
+      });
+      daySel.appendChild(b);
+    });
+
+    const savedTheme = localStorage.getItem('workoutSysTheme');
+    if (savedTheme) document.body.dataset.theme = savedTheme;
     
-    // Workout Block Status
-    const allDone = wData.ex.every((ex, i) => {
-        const id = `d${dayIdx}-e${i}`;
-        const target = isSafe ? 1 : parseInt(ex.d.match(/^(\d+)/)[0]); 
-        return (STATE.workoutProgress[id]||0) >= target;
+    document.getElementById('theme-toggle-btn').addEventListener('click', () => {
+      if (navigator.vibrate) navigator.vibrate(15);
+      const next = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.body.dataset.theme = next;
+      localStorage.setItem('workoutSysTheme', next);
+    });
+
+    const resetOverlay = document.getElementById('reset-modal-overlay');
+    resetOverlay.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('visible'); });
+    document.getElementById('reset-button').addEventListener('click', () => resetOverlay.classList.add('visible'));
+
+    document.getElementById('confirm-reset-btn').addEventListener('click', () => {
+      ['workoutSysProgress','workoutSysCompletedDays','workoutSysLastTouched'].forEach(k => localStorage.removeItem(k));
+      progress = {}; completedDays = []; lastTouched = {};
+      resetOverlay.classList.remove('visible');
+      document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('day-complete'));
+      const activeIdx = Array.from(daySel.children).findIndex(b => b.classList.contains('active'));
+      renderWorkout(activeIdx !== -1 ? activeIdx : ((new Date().getDay() + 6) % 7));
     });
     
-    const statusEl = document.getElementById('status-workout');
-    statusEl.textContent = allDone ? 'COMPLETE' : 'ACTIVE';
-    statusEl.className = `block-status ${allDone ? 'done' : ''}`;
-  },
+    document.getElementById('cancel-reset-btn').addEventListener('click', () => resetOverlay.classList.remove('visible'));
 
-  showInfoModal: (title, text) => {
-      document.getElementById('modal-title').textContent = title;
-      document.getElementById('modal-desc').textContent = text;
-      document.getElementById('info-modal').classList.remove('hidden');
+    const today = (new Date().getDay() + 6) % 7;
+    daySel.children[today].click();
   }
-};
 
-// --- 4. LOGIC ENGINE ---
-const Logic = {
-  toggleCheck: (id, listId, blockName) => {
-    STATE.checklist[id] = !STATE.checklist[id];
-    save('sys_checklist', STATE.checklist);
-    
-    // Re-render specific list to update visuals
-    let items = [];
-    if(blockName === 'wake') items = DATA.boot;
-    if(blockName === 'upload') items = DATA.upload;
-    if(blockName === 'recovery') items = DATA.recovery;
-    
-    UI.renderChecklist(listId, items, blockName);
-    
-    if (navigator.vibrate) navigator.vibrate(50);
-  },
-
-  modSet: (id, max, change, detailsStr) => {
-    const curr = STATE.workoutProgress[id] || 0;
-    
-    // Logic: Clamp between 0 and Max
-    const next = Math.max(0, Math.min(max, curr + change));
-    
-    if (next !== curr) {
-        STATE.workoutProgress[id] = next;
-        save('sys_progress', STATE.workoutProgress);
-        
-        // Timer Trigger (Only on increment, if not finished)
-        if (change > 0 && next <= max) {
-             const restMatch = detailsStr.match(/\|\s*(\d+)s/);
-             const restTime = restMatch ? parseInt(restMatch[1]) : 60;
-             Timer.start(restTime);
-             
-             // Visual highlight
-             document.querySelectorAll('.ex-item').forEach(el => el.classList.remove('active'));
-             document.getElementById(`row-${id}`).classList.add('active');
-        }
-        
-        // Re-render workout list
-        UI.renderWorkout();
-        if (navigator.vibrate) navigator.vibrate(50);
-    }
-  },
-  
-  toggleTheme: () => {
-      STATE.theme = STATE.theme === 'light' ? 'dark' : 'light';
-      localStorage.setItem('sys_theme', STATE.theme);
-      document.body.dataset.theme = STATE.theme;
-  },
-
-  resetDay: () => {
-      document.getElementById('reset-modal').classList.remove('hidden');
-  },
-  
-  confirmReset: () => {
-      STATE.workoutProgress = {}; // Clear sets
-      save('sys_progress', STATE.workoutProgress);
-      
-      // Increment week? Logic is "Purge Weekly Progress"
-      STATE.weekCount++;
-      localStorage.setItem('sys_week', STATE.weekCount);
-      
-      location.reload();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
   }
-};
 
-// --- 5. TIMER ENGINE ---
-const Timer = {
-    interval: null,
-    el: document.getElementById('timer-overlay'),
-    val: document.getElementById('timer-val'),
-    
-    start: (sec) => {
-        if(Timer.interval) clearInterval(Timer.interval);
-        
-        const end = Date.now() + sec * 1000;
-        localStorage.setItem('sys_timer', end);
-        Timer.el.classList.remove('hidden');
-        
-        const tick = () => {
-            const left = Math.ceil((end - Date.now())/1000);
-            if (left <= 0) {
-                Timer.stop(true);
-            } else {
-                const m = Math.floor(left/60).toString().padStart(2,'0');
-                const s = (left%60).toString().padStart(2,'0');
-                Timer.val.textContent = `${m}:${s}`;
-            }
-        };
-        
-        tick();
-        Timer.interval = setInterval(tick, 1000);
-    },
-    
-    stop: (vibrate) => {
-        clearInterval(Timer.interval);
-        localStorage.removeItem('sys_timer');
-        Timer.el.classList.add('hidden');
-        if(vibrate && navigator.vibrate) navigator.vibrate([50, 100, 50]);
-    },
-    
-    restore: () => {
-        const saved = localStorage.getItem('sys_timer');
-        if (saved) {
-            const left = Math.ceil((parseInt(saved) - Date.now())/1000);
-            if (left > 0) Timer.start(left);
-        }
-    },
-    
-    check: () => { /* Alias for restore */ Timer.restore(); }
-};
-
-// --- EVENT LISTENERS ---
-// Accordions
-window.toggleBlock = (id) => {
-    document.getElementById(id).classList.toggle('expanded');
-};
-
-// Modals
-document.getElementById('modal-close-btn').onclick = () => document.getElementById('info-modal').classList.add('hidden');
-document.getElementById('cancel-reset').onclick = () => document.getElementById('reset-modal').classList.add('hidden');
-document.getElementById('confirm-reset').onclick = Logic.confirmReset;
-
-// Controls
-document.getElementById('theme-btn').onclick = Logic.toggleTheme;
-document.getElementById('reset-day-btn').onclick = Logic.resetDay;
-document.getElementById('timer-cancel').onclick = () => Timer.stop(false);
-
-// INIT
-UI.init();
+})();
