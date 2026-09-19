@@ -2,137 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <title>LIFE.OS</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
+  <title>WORKOUT.SYS</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="styles.css" />
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#111111"> 
+  
+  <meta name="theme-color" content="#0a0908">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="WORKOUT">
 </head>
-<body>
+<body data-theme="dark">
 
-<div class="os-container">
-
-  <header class="status-bar">
-    <div class="status-left">
-      <span id="current-date">INITIALIZING...</span>
-      <span class="separator">|</span>
-      <span id="week-indicator">WK 1</span>
-    </div>
-    <div class="status-right">
-      <button id="theme-btn" aria-label="Toggle Theme">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+<header id="main-header">
+  <div class="container">
+    <div class="header-top">
+      <h1 class="logo-text">WORKOUT.SYS</h1>
+      <button id="theme-toggle-btn" class="theme-toggle" aria-label="Toggle Theme">
+        <svg viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="9" class="svg-bg-circle"/>
+          <path d="M10 1a9 9 0 0 1 0 18V1z" class="svg-fg-circle"/>
         </svg>
       </button>
     </div>
-  </header>
+    <nav id="day-selector" role="tablist"></nav>
+  </div>
+</header>
 
-  <main id="feed">
+<main class="container">
+  <div id="workout-header">
+    <h2 id="workout-title" class="page-title"></h2>
+  </div>
 
-    <section class="block" id="block-wake">
-      <div class="block-header">
-        <div class="time-stamp">06:00</div>
-        <div class="block-title">WAKE & PRIME</div>
-        <div class="block-status" id="status-wake">PENDING</div>
-      </div>
-      <div class="block-content">
-        <ul class="checklist" id="list-wake">
-            </ul>
-      </div>
-    </section>
+  <div id="progress-bar-wrap" class="hidden">
+    <div id="progress-bar-fill"></div>
+  </div>
+  <p id="progress-label" class="progress-label hidden"></p>
 
-    <section class="block" id="block-workout">
-      <div class="block-header">
-        <div class="time-stamp">07:00</div>
-        <div class="block-title">WORKOUT MODULE</div>
-        <div class="block-status" id="status-workout">READY</div>
-      </div>
-      <div class="block-content">
-        <div class="workout-meta">
-          <span id="workout-day-name">LOADING...</span>
-          <span id="workout-est-time">-- MIN</span>
-        </div>
-        <ul id="exercise-list" class="workout-list">
-            </ul>
-        <div id="rest-message" class="hidden system-msg">
-            // SYSTEM RESTORE: ACTIVE RECOVERY PROTOCOL
-        </div>
-      </div>
-    </section>
+  <ul id="exercise-list" class="list-reset"></ul>
 
-    <section class="block" id="block-upload">
-      <div class="block-header">
-        <div class="time-stamp">08:30</div>
-        <div class="block-title">UPLOAD & FOCUS</div>
-        <div class="block-status" id="status-upload">PENDING</div>
-      </div>
-      <div class="block-content">
-        <ul class="checklist" id="list-upload">
-            </ul>
-      </div>
-    </section>
+  <div id="completed-section" class="hidden">
+    <h3 class="section-label">// COMPLETED</h3>
+    <ul id="completed-list" class="list-reset"></ul>
+  </div>
 
-    <section class="block" id="block-recovery">
-      <div class="block-header">
-        <div class="time-stamp">18:30</div>
-        <div class="block-title">RECOVERY & SHUTDOWN</div>
-        <div class="block-status" id="status-recovery">PENDING</div>
-      </div>
-      <div class="block-content">
-        <ul class="checklist" id="list-recovery">
-            </ul>
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="control-deck">
-    <button id="reset-day-btn" class="cmd-btn">SYSTEM RESET</button>
+  <footer>
+    <button id="reset-button" class="btn-secondary">Purge weekly progress</button>
   </footer>
+</main>
 
-</div>
+<div id="timer-display">00:00</div>
 
-<div id="timer-overlay" class="hidden">
-  <div class="timer-card">
-    <span id="timer-val">00:00</span>
-    <button id="timer-cancel">STOP</button>
-  </div>
-</div>
-
-<div id="info-modal" class="modal-overlay hidden">
-  <div class="modal-card">
-    <h3 id="modal-title">TITLE</h3>
-    <div class="modal-divider"></div>
-    <p id="modal-desc">Description goes here.</p>
-    <button id="modal-close-btn" class="modal-action-btn">CLOSE</button>
-  </div>
-</div>
-
-<div id="reset-modal" class="modal-overlay hidden">
-    <div class="modal-card">
-        <h3>CONFIRM RESET</h3>
-        <div class="modal-divider"></div>
-        <p>This will purge all daily progress and increment the week counter. Proceed?</p>
-        <div class="modal-actions">
-            <button id="confirm-reset" class="modal-action-btn danger">PURGE</button>
-            <button id="cancel-reset" class="modal-action-btn secondary">CANCEL</button>
-        </div>
+<div id="reset-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <h2 class="modal-title">Reset Cycle?</h2>
+    <p class="modal-body-text">This will permanently delete all logs for the current week.</p>
+    <div class="modal-actions">
+      <button id="confirm-reset-btn" class="btn-primary">Confirm</button>
+      <button id="cancel-reset-btn" class="btn-secondary" style="margin-top:8px;">Cancel</button>
     </div>
+  </div>
 </div>
 
-<script src="script.js"></script>
+<div id="completion-overlay">
+  <div class="completion-card">
+    <h2 class="modal-title" id="completion-title">Session Complete</h2>
+    <p id="completion-message"></p>
+    <p class="hint">Tap to dismiss</p>
+  </div>
+</div>
+
+<script src="script.js" defer></script>
 </body>
 </html>
