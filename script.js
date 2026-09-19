@@ -1,58 +1,58 @@
 (function() {
   'use strict';
 
-  /* ─── Workout Data (From Source PDF) ─── */
+  /* ─── Workout Data (Friendly & Neutral Portuguese) ─── */
   const workoutData = [
-    { "day": 1, "title": "MONDAY", "exercises": [
-      { "name": "Puxada Alta Polia", "details": "3 × 10-12" },
-      { "name": "Remada Baixa", "details": "3 × 10-12" },
-      { "name": "Supino Inclinado", "details": "3 × 10-12" },
-      { "name": "Crucifixo Inverso", "details": "3 × 12-15" },
-      { "name": "Elevação Lateral", "details": "3 × 12-15" },
-      { "name": "Abdominal", "details": "3 × 15" }
+    { "day": 1, "title": "Monday", "exercises": [
+      { "name": "Puxada Alta Polia", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Mantenha a postura ereta e puxe a barra em direção ao peito. Estenda os braços de forma controlada na subida." },
+      { "name": "Remada Baixa", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Estabilize o tronco. Puxe a barra em direção ao abdômen, aproximando bem as escápulas." },
+      { "name": "Supino Inclinado", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Desça controladamente até a altura do peito e empurre sem travar totalmente os cotovelos no topo." },
+      { "name": "Crucifixo Inverso", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Braços ligeiramente flexionados. Concentre-se no movimento da parte posterior do ombro." },
+      { "name": "Elevação Lateral", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Movimento suave e controlado. Levante até a linha dos ombros." },
+      { "name": "Abdominal", "details": "3 × 15", "instructions": "EXECUÇÃO: Contraia o abdômen sem forçar ou puxar a região do pescoço." }
     ]},
-    { "day": 2, "title": "TUESDAY", "exercises": [
-      { "name": "Elevação Pélvica", "details": "4 × 8-10" },
-      { "name": "Leg Press 45°", "details": "3 × 10-12" },
-      { "name": "Extensão Lombar", "details": "2 × 12-15" },
-      { "name": "Mesa Flexora", "details": "3 × 10-12" },
-      { "name": "Cadeira Abdutora", "details": "3 × 15-20" },
-      { "name": "Panturrilha", "details": "3 × 12-15" },
-      { "name": "Abdominal", "details": "3 × 15" }
+    { "day": 2, "title": "Tuesday", "exercises": [
+      { "name": "Elevação Pélvica", "details": "4 × 8-10", "instructions": "EXECUÇÃO: Empurre o peso através dos calcanhares. Faça uma pausa breve no topo do movimento." },
+      { "name": "Leg Press 45°", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Pés na largura dos ombros. Desça de maneira controlada, mantendo o quadril firme no banco." },
+      { "name": "Extensão Lombar", "details": "2 × 12-15", "instructions": "EXECUÇÃO: Arredonde levemente as costas e retorne a posição contraindo os glúteos." },
+      { "name": "Mesa Flexora", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Mantenha o quadril bem apoiado. Concentre a força na parte posterior da coxa." },
+      { "name": "Cadeira Abdutora", "details": "3 × 15-20", "instructions": "EXECUÇÃO: Afaste as pernas de forma firme e controlada." },
+      { "name": "Panturrilha", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Pause brevemente na descida e suba de forma controlada." },
+      { "name": "Abdominal", "details": "3 × 15", "instructions": "EXECUÇÃO: Mantenha a postura e a respiração controlada durante a execução." }
     ]},
-    { "day": 3, "title": "WEDNESDAY", "exercises": [
-      { "name": "Remada Articulada", "details": "3 × 10-12" },
-      { "name": "Puxada Aberta", "details": "2 × 10-12" },
-      { "name": "Desenvolvimento", "details": "3 × 10-12" },
-      { "name": "Elevação Lateral", "details": "4 × 12-15" },
-      { "name": "Tríceps Corda", "details": "3 × 12-15" },
-      { "name": "Abdominal", "details": "3 × 15" }
+    { "day": 3, "title": "Wednesday", "exercises": [
+      { "name": "Remada Articulada", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Puxe os cotovelos para trás com foco nos músculos das costas." },
+      { "name": "Puxada Aberta", "details": "2 × 10-12", "instructions": "EXECUÇÃO: Foque na amplitude do movimento. Controle bem o retorno do peso." },
+      { "name": "Desenvolvimento", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Empurre o peso mantendo o controle contínuo durante a descida." },
+      { "name": "Elevação Lateral", "details": "4 × 12-15", "instructions": "EXECUÇÃO: Evite balançar o corpo, mantendo o foco na lateral dos ombros." },
+      { "name": "Tríceps Corda", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Mantenha os cotovelos fixos. Separe a corda suavemente no final do movimento." },
+      { "name": "Abdominal", "details": "3 × 15", "instructions": "EXECUÇÃO: Mantenha um ritmo tranquilo e a contração constante." }
     ]},
-    { "day": 4, "title": "THURSDAY", "exercises": [
-      { "name": "Búlgaro", "details": "3 × 8-10" },
-      { "name": "Coice Polia", "details": "3 × 12" },
-      { "name": "Cadeira Extensora", "details": "3 × 12-15" },
-      { "name": "Cadeira Flexora", "details": "3 × 12-15" },
-      { "name": "Panturrilha", "details": "3 × 12-15" },
-      { "name": "Abdominal", "details": "3 × 15" }
+    { "day": 4, "title": "Thursday", "exercises": [
+      { "name": "Búlgaro", "details": "3 × 8-10", "instructions": "EXECUÇÃO: Incline o tronco levemente à frente. Desça com controle mantendo o equilíbrio." },
+      { "name": "Coice Polia", "details": "3 × 12", "instructions": "EXECUÇÃO: Movimente a perna para trás em diagonal. Concentre-se na contração do glúteo." },
+      { "name": "Cadeira Extensora", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Estenda as pernas completamente, segurando a posição por um instante." },
+      { "name": "Cadeira Flexora", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Mantenha o corpo estável no banco para focar no músculo alvo." },
+      { "name": "Panturrilha", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Mantenha um ritmo suave. Controle a descida com calma." },
+      { "name": "Abdominal", "details": "3 × 15", "instructions": "EXECUÇÃO: Solte o ar ao contrair, focando no trabalho da região central." }
     ]},
-    { "day": 5, "title": "FRIDAY", "exercises": [
-      { "name": "Pullover Polia Alta", "details": "3 × 12-15" },
-      { "name": "Face Pull", "details": "3 × 15" },
-      { "name": "Remada Baixa", "details": "3 × 10-12" },
-      { "name": "Rosca Direta", "details": "3 × 10-12" },
-      { "name": "Tríceps Barra Reta", "details": "3 × 10-12" },
-      { "name": "Abdominal", "details": "3 × 15" }
+    { "day": 5, "title": "Friday", "exercises": [
+      { "name": "Pullover Polia Alta", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Braços estendidos. Puxe a barra até a linha do quadril usando as costas." },
+      { "name": "Face Pull", "details": "3 × 15", "instructions": "EXECUÇÃO: Puxe na direção do rosto, rotacionando levemente as mãos no fim do movimento." },
+      { "name": "Remada Baixa", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Mantenha a estabilidade. Cotovelos devem passar rente ao corpo." },
+      { "name": "Rosca Direta", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Foque no bíceps sem usar impulso das costas ou ombros." },
+      { "name": "Tríceps Barra Reta", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Estenda os braços completamente, mantendo a tensão no tríceps." },
+      { "name": "Abdominal", "details": "3 × 15", "instructions": "EXECUÇÃO: Mantenha o movimento fluido e o abdômen engajado." }
     ]},
-    { "day": 6, "title": "SATURDAY", "exercises": [
-      { "name": "Elevação Pélvica", "details": "3 × 8-10" },
-      { "name": "Agachamento", "details": "3 × 10-12" },
-      { "name": "Cadeira Abdutora", "details": "3 × 15-20" },
-      { "name": "Cadeira Extensora", "details": "3 × 12-15" },
-      { "name": "Panturrilha", "details": "3 × 12-15" },
-      { "name": "Abdominal", "details": "3 × 15" }
+    { "day": 6, "title": "Saturday", "exercises": [
+      { "name": "Elevação Pélvica", "details": "3 × 8-10", "instructions": "EXECUÇÃO: Retome o foco na ativação dos glúteos, empurrando com firmeza." },
+      { "name": "Agachamento", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Desça com a postura alinhada e peito aberto. Encontre seu limite confortável." },
+      { "name": "Cadeira Abdutora", "details": "3 × 15-20", "instructions": "EXECUÇÃO: Sente-se bem apoiado. Movimento constante e controlado." },
+      { "name": "Cadeira Extensora", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Mantenha o controle do movimento até o final da série." },
+      { "name": "Panturrilha", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Evite dar impulso na base do movimento. Foque na técnica." },
+      { "name": "Abdominal", "details": "3 × 15", "instructions": "EXECUÇÃO: Finalize o treino mantendo a técnica e o controle respiratório adequados." }
     ]},
-    { "day": 7, "title": "SUNDAY", "exercises": [] }
+    { "day": 7, "title": "Sunday", "exercises": [] }
   ];
 
   /* ─── State ───────────────────────────────────────────────────── */
@@ -99,7 +99,7 @@
       compSection.classList.add('hidden');
       fill.parentElement.classList.add('hidden');
       progressLabel.classList.add('hidden');
-      list.innerHTML = `<li class="rest-day-message"><h3>Rest Day</h3><p>System recovery initiated.</p></li>`;
+      list.innerHTML = `<li class="rest-day-message"><h3>Rest Day</h3><p>Take some time to rest and recover.</p></li>`;
       return;
     }
 
@@ -122,11 +122,13 @@
         <div class="set-counter ${sCurrent >= sTotal ? 'sets-complete' : ''}">${sCurrent}<span class="slash">/</span>${sTotal}</div>
         <span class="exercise-name">${ex.name}</span>
         <div class="exercise-details-text">${ex.details}</div>
+        <button class="info-btn" aria-label="Instructions"></button>
       `;
 
       let pressTimer, isLongPress = false, startX = 0, startY = 0;
 
       li.addEventListener('pointerdown', (e) => {
+        if (e.target.closest('.info-btn')) return;
         isLongPress = false;
         startX = e.clientX; startY = e.clientY;
         li.setPointerCapture(e.pointerId);
@@ -152,17 +154,22 @@
 
       li.addEventListener('pointerup', (e) => {
         clearTimeout(pressTimer);
-        if (isLongPress) return;
+        if (isLongPress || e.target.closest('.info-btn')) return;
         const newVal = Math.min(sTotal, (progress[id] || 0) + 1);
         progress[id] = newVal;
         lastTouched[id] = Date.now();
-        if (newVal < sTotal) startTimer(60); // 60s hardcoded rest[cite: 11]
+        if (newVal < sTotal) startTimer(60);
         save();
         renderWorkout(idx);
       });
 
       li.addEventListener('pointercancel', () => clearTimeout(pressTimer));
       li.addEventListener('contextmenu', (e) => e.preventDefault());
+
+      li.querySelector('.info-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        showInfo(ex.name, ex.instructions || '');
+      });
 
       if (sCurrent >= sTotal) completedNodes.push(li);
       else if (sCurrent > 0) activeNodesData.push({ node: li, ts: lastTouched[id] || 0 });
@@ -188,7 +195,7 @@
       completedDays.push(`day-${idx}`);
       localStorage.setItem('workoutSysCompletedDays', JSON.stringify(completedDays));
       document.querySelectorAll('.day-btn')[idx].classList.add('day-complete');
-      showCompletion(data.title);
+      showCompletion();
     }
   }
 
@@ -213,22 +220,43 @@
     activeTimer = setInterval(tick, 500);
   }
 
-  function showCompletion(title) {
-    document.getElementById('completion-message').textContent = `${title} complete.`;
+  function showInfo(title, text) {
+    document.getElementById('info-modal-title').textContent = title;
+    document.getElementById('info-modal-instructions').innerHTML = text
+      .split(/(EXECUÇÃO:|SETUP:)/g)
+      .filter(Boolean)
+      .map(l => {
+        l = l.trim();
+        return /^(EXECUÇÃO:|SETUP:)$/.test(l)
+          ? `<span class="instruction-label">${l.replace(':', '')}</span>`
+          : `<p>${l}</p>`;
+      }).join('');
+    document.getElementById('info-modal-overlay').classList.add('visible');
+  }
+
+  function showCompletion() {
+    document.getElementById('completion-message').textContent = `Great job on finishing today's session.`;
     const el = document.getElementById('completion-overlay');
     el.classList.add('visible');
     
     // Ghost Click Neutralizer
-    setTimeout(() => {
-      el.onclick = () => {
+    const showTime = Date.now();
+    el.onclick = (e) => {
+      if (Date.now() - showTime > 400) {
         el.classList.remove('visible');
         el.onclick = null;
-      };
-    }, 150);
+      }
+    };
   }
 
   /* ─── INIT ────────────────────────────────────────────────────── */
   function init() {
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+
     const savedWeek = localStorage.getItem('workoutSysCurrentWeek');
     const currentWeek = getMondayOfCurrentWeek();
     
@@ -242,7 +270,7 @@
 
     const daySel = document.getElementById('day-selector');
 
-    ['MO','TU','WE','TH','FR','SA','SU'].forEach((l, i) => {
+    ['MON','TUE','WED','THU','FRI','SAT','SUN'].forEach((l, i) => {
       const b = document.createElement('button');
       b.className = 'day-btn';
       b.setAttribute('role', 'tab');
@@ -257,15 +285,33 @@
       daySel.appendChild(b);
     });
 
-    const savedTheme = localStorage.getItem('workoutSysTheme');
-    if (savedTheme) document.body.dataset.theme = savedTheme;
+    // Theme Management
+    const savedTheme = localStorage.getItem('workoutSysTheme') || 'dark-1';
+    document.body.dataset.theme = savedTheme;
     
+    const themeModal = document.getElementById('theme-modal-overlay');
     document.getElementById('theme-toggle-btn').addEventListener('click', () => {
       if (navigator.vibrate) navigator.vibrate(15);
-      const next = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
-      document.body.dataset.theme = next;
-      localStorage.setItem('workoutSysTheme', next);
+      themeModal.classList.add('visible');
     });
+
+    themeModal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('visible'); });
+    document.querySelector('.theme-close-btn').addEventListener('click', () => themeModal.classList.remove('visible'));
+
+    document.querySelectorAll('.theme-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (navigator.vibrate) navigator.vibrate(15);
+        const theme = btn.dataset.themeVal;
+        document.body.dataset.theme = theme;
+        localStorage.setItem('workoutSysTheme', theme);
+        themeModal.classList.remove('visible');
+      });
+    });
+
+    // General Modals
+    const infoOverlay = document.getElementById('info-modal-overlay');
+    infoOverlay.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('visible'); });
+    document.getElementById('info-modal-close-btn').addEventListener('click', () => infoOverlay.classList.remove('visible'));
 
     const resetOverlay = document.getElementById('reset-modal-overlay');
     resetOverlay.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('visible'); });
