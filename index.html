@@ -3,30 +3,30 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
-  <title>WORKOUT.SYS</title>
+  <title>ULTER</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="styles.css" />
   <link rel="manifest" href="manifest.json">
   
-  <meta name="theme-color" content="#0a0908">
+  <meta name="theme-color" content="#1A1D24">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="WORKOUT">
+  <meta name="apple-mobile-web-app-title" content="ULTER">
 </head>
-<body data-theme="dark">
+<body data-theme="dark-1">
 
 <header id="main-header">
   <div class="container">
     <div class="header-top">
-      <h1 class="logo-text">WORKOUT.SYS</h1>
-      <button id="theme-toggle-btn" class="theme-toggle" aria-label="Toggle Theme">
-        <svg viewBox="0 0 20 20" fill="none">
-          <circle cx="10" cy="10" r="9" class="svg-bg-circle"/>
-          <path d="M10 1a9 9 0 0 1 0 18V1z" class="svg-fg-circle"/>
+      <h1 class="logo-text">ULTER</h1>
+      <button id="theme-toggle-btn" class="theme-toggle" aria-label="Choose Theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
         </svg>
       </button>
     </div>
@@ -47,21 +47,73 @@
   <ul id="exercise-list" class="list-reset"></ul>
 
   <div id="completed-section" class="hidden">
-    <h3 class="section-label">// COMPLETED</h3>
+    <h3 class="section-label">Completed</h3>
     <ul id="completed-list" class="list-reset"></ul>
   </div>
 
   <footer>
-    <button id="reset-button" class="btn-secondary">Purge weekly progress</button>
+    <button id="reset-button" class="btn-secondary">Reset weekly progress</button>
   </footer>
 </main>
 
 <div id="timer-display">00:00</div>
 
+<!-- Theme Selection Modal -->
+<div id="theme-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Theme</h2>
+      <button class="close-btn theme-close-btn" aria-label="Close"></button>
+    </div>
+    <div class="divider"></div>
+    <p class="modal-body-text">Select your preferred color palette.</p>
+    
+    <div class="theme-grid">
+      <div class="theme-option" data-theme-val="light-1" style="background: #F4F7FB; border-color: #7FA1E8;">
+        <div class="theme-swatch" style="background: #7FA1E8;"></div>
+        <span style="color: #2D3748;">Soft Blue</span>
+      </div>
+      <div class="theme-option" data-theme-val="light-2" style="background: #F3F8F5; border-color: #78B394;">
+        <div class="theme-swatch" style="background: #78B394;"></div>
+        <span style="color: #2C3E35;">Mint</span>
+      </div>
+      <div class="theme-option" data-theme-val="light-3" style="background: #FFF5F3; border-color: #E29587;">
+        <div class="theme-swatch" style="background: #E29587;"></div>
+        <span style="color: #4A3331;">Peach</span>
+      </div>
+      <div class="theme-option" data-theme-val="dark-1" style="background: #1A1D24; border-color: #AEC8FF;">
+        <div class="theme-swatch" style="background: #AEC8FF;"></div>
+        <span style="color: #F0F4F8;">Navy</span>
+      </div>
+      <div class="theme-option" data-theme-val="dark-2" style="background: #1A221E; border-color: #A2D6B8;">
+        <div class="theme-swatch" style="background: #A2D6B8;"></div>
+        <span style="color: #EDF4F0;">Forest</span>
+      </div>
+      <div class="theme-option" data-theme-val="dark-3" style="background: #221A24; border-color: #D0B3E2;">
+        <div class="theme-swatch" style="background: #D0B3E2;"></div>
+        <span style="color: #F4EEF5;">Plum</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Instructions Modal -->
+<div id="info-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="info-modal-title" class="modal-title" style="margin:0;"></h2>
+      <button id="info-modal-close-btn" class="close-btn" aria-label="Close"></button>
+    </div>
+    <div class="divider"></div>
+    <div id="info-modal-instructions" class="modal-body"></div>
+  </div>
+</div>
+
+<!-- Reset Modal -->
 <div id="reset-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true">
   <div class="modal">
     <h2 class="modal-title">Reset Cycle?</h2>
-    <p class="modal-body-text">This will permanently delete all logs for the current week.</p>
+    <p class="modal-body-text">This will restart your tracking for the current week.</p>
     <div class="modal-actions">
       <button id="confirm-reset-btn" class="btn-primary">Confirm</button>
       <button id="cancel-reset-btn" class="btn-secondary" style="margin-top:8px;">Cancel</button>
@@ -71,12 +123,15 @@
 
 <div id="completion-overlay">
   <div class="completion-card">
-    <h2 class="modal-title" id="completion-title">Session Complete</h2>
+    <h2 class="modal-title" id="completion-title">Workout Complete</h2>
     <p id="completion-message"></p>
-    <p class="hint">Tap to dismiss</p>
+    <p class="hint">Tap anywhere to dismiss</p>
   </div>
 </div>
 
 <script src="script.js" defer></script>
+
+<ElicitationsGroup>
+</ElicitationsGroup>
 </body>
 </html>
