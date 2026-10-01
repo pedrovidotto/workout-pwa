@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  /* ─── Workout Data Phase 75kg (Strict 3-Set Cap & Plant-Based Optimized) ─── */
+  /* ─── Workout Data Phase 75kg (Strict 3-Set Cap) ─── */
   const workoutData = [
     { "day": 1, "title": "Upper A", "subtitle": "Chest Heavy & Side Delt", "duration": "55m", "exercises": [
       { "name": "Flat DB Bench Press", "details": "3 × 6–8 reps · 150s rest", "instructions": "SETUP: 34-36kg. EXECUTION: 3s eccentric, 1s dead-stop pause at bottom, explosive concentric." },
@@ -70,12 +70,18 @@
   async function toggleWakeLock(lockActive) {
     if (!('wakeLock' in navigator)) return;
     try {
-      if (lockActive && !wakeLock) wakeLock = await navigator.wakeLock.request('screen');
-      else if (!lockActive && wakeLock) { await wakeLock.release(); wakeLock = null; }
-    } catch (err) { console.warn('Wake Lock error:', err); }
+      if (lockActive && !wakeLock) {
+        wakeLock = await navigator.wakeLock.request('screen');
+      } else if (!lockActive && wakeLock) {
+        await wakeLock.release();
+        wakeLock = null;
+      }
+    } catch (err) {
+      console.warn('Wake Lock error:', err);
+    }
   }
 
-  /* ─── Render Engine (DOM Fragment Optimized) ──────────────────── */
+  /* ─── WORKOUT SYSTEM (DOM Fragment Rendering) ─────────────────── */
   function renderWorkout(idx) {
     const data = workoutData[idx];
     const list = document.getElementById('exercise-list');
@@ -84,8 +90,10 @@
     const fill = document.getElementById('progress-bar-fill');
     const progressLabel = document.getElementById('progress-label');
 
-    document.getElementById('workout-title').innerHTML = `${data.title}<br><span style="font-weight:400;font-size:0.5em;opacity:0.6;">${data.subtitle}</span>`;
-    document.getElementById('workout-duration').textContent = data.duration === '—' ? '' : `EST. ${data.duration}`;
+    document.getElementById('workout-title').innerHTML =
+      `${data.title}<br><span style="font-weight:400;font-size:0.5em;opacity:0.6;letter-spacing:0.02em;">${data.subtitle}</span>`;
+    document.getElementById('workout-duration').textContent =
+      data.duration === '—' ? '' : `EST. ${data.duration}`;
 
     list.innerHTML = '';
     compList.innerHTML = '';
@@ -103,15 +111,19 @@
     }
 
     let total = 0, done = 0;
-    const activeNodesData = [], pendingNodes = [], completedNodes = [];
-    const fragmentActive = document.createDocumentFragment();
-    const fragmentComp = document.createDocumentFragment();
+    const activeNodesData = [];
+    const pendingNodes    = [];
+    const completedNodes  = [];
+    const fragmentActive  = document.createDocumentFragment();
+    const fragmentComp    = document.createDocumentFragment();
 
     items.forEach((ex, i) => {
       const id = `d${idx}-${ex.idType || 'e'}${i}`;
       const sTotal = parseSets(ex.details);
       const sCurrent = Math.min(progress[id] || 0, sTotal);
-      total += sTotal; done += sCurrent;
+
+      total += sTotal;
+      done  += sCurrent;
 
       const li = document.createElement('li');
       li.className = 'exercise-item';
@@ -123,45 +135,63 @@
       `;
 
       let pressTimer, isLongPress = false, startX = 0, startY = 0;
+
       li.addEventListener('pointerdown', (e) => {
         if (e.target.closest('.info-btn')) return;
-        isLongPress = false; startX = e.clientX; startY = e.clientY;
+        isLongPress = false;
+        startX = e.clientX; startY = e.clientY;
         li.setPointerCapture(e.pointerId);
         pressTimer = setTimeout(() => {
           isLongPress = true;
           if (navigator.vibrate) navigator.vibrate(40);
-          progress[id] = Math.max(0, (progress[id] || 0) - 1);
+          const newVal = Math.max(0, (progress[id] || 0) - 1);
+          progress[id] = newVal;
           lastTouched[id] = Date.now();
-          if (progress[id] < sTotal && activeTimer) {
-            clearInterval(activeTimer); activeTimer = null;
+          if (newVal < sTotal && activeTimer) {
+            clearInterval(activeTimer);
             document.getElementById('timer-display').classList.remove('visible');
+            activeTimer = null;
             toggleWakeLock(false);
           }
-          save(); renderWorkout(idx);
+          save();
+          renderWorkout(idx);
         }, 450);
       });
-      li.addEventListener('pointermove', (e) => { if (Math.abs(e.clientY - startY) > 12 || Math.abs(e.clientX - startX) > 12) clearTimeout(pressTimer); });
+
+      li.addEventListener('pointermove', (e) => {
+        if (Math.abs(e.clientY - startY) > 12 || Math.abs(e.clientX - startX) > 12) clearTimeout(pressTimer);
+      });
+
       li.addEventListener('pointerup', (e) => {
         clearTimeout(pressTimer);
         if (isLongPress || e.target.closest('.info-btn')) return;
-        progress[id] = Math.min(sTotal, (progress[id] || 0) + 1);
+        const newVal = Math.min(sTotal, (progress[id] || 0) + 1);
+        progress[id] = newVal;
         lastTouched[id] = Date.now();
-        if (progress[id] < sTotal) startTimer(getRestSeconds(ex.details));
-        save(); renderWorkout(idx);
+        if (newVal < sTotal) startTimer(getRestSeconds(ex.details));
+        save();
+        renderWorkout(idx);
       });
+
       li.addEventListener('pointercancel', () => clearTimeout(pressTimer));
       li.addEventListener('contextmenu', (e) => e.preventDefault());
-      li.querySelector('.info-btn').addEventListener('click', (e) => { e.stopPropagation(); showInfo(ex.name, ex.instructions || ''); });
+
+      li.querySelector('.info-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        showInfo(ex.name, ex.instructions || '');
+      });
 
       if (sCurrent >= sTotal) completedNodes.push(li);
       else if (sCurrent > 0) activeNodesData.push({ node: li, ts: lastTouched[id] || 0 });
       else pendingNodes.push(li);
     });
 
-    activeNodesData.sort((a, b) => b.ts - a.ts).forEach((item, index) => {
+    activeNodesData.sort((a, b) => b.ts - a.ts);
+    activeNodesData.forEach((item, index) => {
       item.node.classList.add(index === 0 ? 'primary-active' : 'secondary-active');
       fragmentActive.appendChild(item.node);
     });
+    
     pendingNodes.forEach(node => fragmentActive.appendChild(node));
     completedNodes.forEach(node => fragmentComp.appendChild(node));
 
@@ -172,6 +202,7 @@
     progressLabel.classList.remove('hidden');
     fill.style.width = `${(done / total) * 100}%`;
     progressLabel.textContent = `${done} / ${total} SETS`;
+
     compSection.classList.toggle('hidden', compList.children.length === 0);
 
     if (done === total && total > 0 && !completedDays.includes(`day-${idx}`)) {
@@ -183,7 +214,6 @@
   }
 
   function startTimer(sec) {
-    if (sec <= 0) return;
     if (activeTimer) { clearInterval(activeTimer); activeTimer = null; }
     toggleWakeLock(true);
     const end = Date.now() + sec * 1000;
@@ -193,20 +223,30 @@
     function tick() {
       const rem = Math.ceil((end - Date.now()) / 1000);
       if (rem <= 0) {
-        clearInterval(activeTimer); activeTimer = null;
+        clearInterval(activeTimer);
+        activeTimer = null;
         el.classList.remove('visible');
         if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
         toggleWakeLock(false);
-      } else el.textContent = `${Math.floor(rem / 60)}:${(rem % 60).toString().padStart(2, '0')}`;
+      } else {
+        el.textContent = `${Math.floor(rem / 60)}:${(rem % 60).toString().padStart(2, '0')}`;
+      }
     }
-    tick(); activeTimer = setInterval(tick, 500);
+    tick();
+    activeTimer = setInterval(tick, 500);
   }
 
-  /* ─── UI Modals ───────────────────────────────────────────────── */
   function showInfo(title, text) {
     document.getElementById('info-modal-title').textContent = title;
-    document.getElementById('info-modal-instructions').innerHTML = text.split(/(SETUP:|EXECUTION:|PROTOCOL:|PACING:|METRIC CHECK:)/g).filter(Boolean)
-      .map(l => /^(SETUP:|EXECUTION:|PROTOCOL:|PACING:|METRIC CHECK:)$/.test(l.trim()) ? `<span class="instruction-label">${l.replace(':', '').trim()}</span>` : `<p>${l.trim()}</p>`).join('');
+    document.getElementById('info-modal-instructions').innerHTML = text
+      .split(/(SETUP:|EXECUTION:|PROTOCOL:|PACING:|METRIC CHECK:)/g)
+      .filter(Boolean)
+      .map(l => {
+        l = l.trim();
+        return /^(SETUP:|EXECUTION:|PROTOCOL:|PACING:|METRIC CHECK:)$/.test(l)
+          ? `<span class="instruction-label">${l.replace(':', '')}</span>`
+          : `<p>${l}</p>`;
+      }).join('');
     document.getElementById('info-modal-overlay').classList.add('visible');
   }
 
@@ -215,24 +255,176 @@
     const el = document.getElementById('completion-overlay');
     el.classList.add('visible');
     const showTime = Date.now();
-    el.onclick = () => { if (Date.now() - showTime > 400) { el.classList.remove('visible'); el.onclick = null; } };
+    el.onclick = (e) => {
+      if (Date.now() - showTime > 400) {
+        el.classList.remove('visible');
+        el.onclick = null;
+      }
+    };
+  }
+
+  /* ─── MIND SYSTEM ─────────────────────────────────────────────── */
+  const nameInput = document.getElementById('name-input');
+  
+  function updateMantras() {
+    const n = nameInput.value.trim() || 'Pedro';
+    document.getElementById('master-mantra').textContent = `"${n}, right now your mind is telling a scary story about the future, and your body is trying to protect you from it. You are experiencing a feeling, not a fact."`;
+    document.getElementById('loop-mantra').textContent = `"That's just an old loop playing again. I don't have to listen to it."`;
+    document.getElementById('tension-mantra').textContent = `"${n}, your body is safe. This tension is just energy trying to help."`;
+    document.getElementById('future-mantra').textContent = `"${n}, you don't need to solve the future today. You just need one slow breath right now."`;
+  }
+  nameInput.addEventListener('input', updateMantras);
+
+  function switchMindTab(targetId) {
+    if (navigator.vibrate) navigator.vibrate(20);
+    document.querySelectorAll('.mind-tab').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.target === targetId);
+    });
+    document.querySelectorAll('.mind-tab-content').forEach(content => {
+      content.classList.toggle('active', content.id === targetId);
+    });
+  }
+
+  document.querySelectorAll('.mind-tab').forEach(tab => {
+    tab.addEventListener('click', () => switchMindTab(tab.dataset.target));
+  });
+
+  document.querySelectorAll('.ground-trigger').forEach(btn => {
+    btn.addEventListener('click', function() { 
+      if (navigator.vibrate) navigator.vibrate(20);
+      this.classList.toggle('done'); 
+    });
+  });
+
+  document.getElementById('reset-mind-btn').addEventListener('click', () => {
+    document.querySelectorAll('.ground-trigger, .action-btn').forEach(c => c.classList.remove('done'));
+    nameInput.value = '';
+    updateMantras();
+    switchMindTab('loop-tab');
+    stopBreathe();
+  });
+
+  /* ─── Breathing Engine ────────────────────────────────────────── */
+  let breatheActive = false;
+  let currentBreatheMode = [];
+  let currentPhaseIndex = 0;
+  let countdownInterval = null;
+
+  const breatheModes = {
+    vagus: [ { label: 'Inhale', time: 4, action: 'in' }, { label: 'Exhale', time: 6, action: 'out' } ],
+    box: [ { label: 'Inhale', time: 4, action: 'in' }, { label: 'Hold', time: 4, action: 'hold' }, { label: 'Exhale', time: 4, action: 'out' }, { label: 'Hold', time: 4, action: 'hold' } ],
+    relax: [ { label: 'Inhale', time: 4, action: 'in' }, { label: 'Hold', time: 7, action: 'hold' }, { label: 'Exhale', time: 8, action: 'out' } ]
+  };
+
+  document.querySelectorAll('.breathe-trigger').forEach(btn => {
+    btn.addEventListener('click', () => openBreatheModal(btn.dataset.mode));
+  });
+
+  function openBreatheModal(modeKey) {
+    currentBreatheMode = breatheModes[modeKey];
+    currentPhaseIndex = 0;
+    breatheActive = true;
+
+    const circle = document.getElementById('breathe-circle-huge');
+    const label = document.getElementById('breathe-label-huge');
+    const display = document.getElementById('breathe-display-huge');
+
+    circle.style.transition = 'none';
+    circle.style.transform = 'translate(-50%, -50%) scale(0.15)';
+    circle.style.opacity = '0';
+    label.textContent = 'Prepare';
+    display.textContent = '·';
+
+    document.getElementById('breathe-modal-overlay').classList.add('visible');
+    setTimeout(runBreathePhase, 600);
+  }
+
+  function stopBreathe() {
+    breatheActive = false;
+    if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+    document.getElementById('breathe-modal-overlay').classList.remove('visible');
+
+    const circle = document.getElementById('breathe-circle-huge');
+    setTimeout(() => {
+      circle.style.transition = 'none';
+      circle.style.transform = 'translate(-50%, -50%) scale(0.15)';
+      circle.style.opacity = '0';
+      document.getElementById('breathe-label-huge').textContent = 'Prepare';
+      document.getElementById('breathe-display-huge').textContent = '·';
+    }, 300);
+  }
+
+  document.getElementById('breathe-stop-btn').addEventListener('click', stopBreathe);
+
+  function runBreathePhase() {
+    if (!breatheActive) return;
+    if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+
+    const phase = currentBreatheMode[currentPhaseIndex];
+    const display = document.getElementById('breathe-display-huge');
+    const label = document.getElementById('breathe-label-huge');
+    const circle = document.getElementById('breathe-circle-huge');
+
+    label.textContent = phase.label;
+    let count = phase.time;
+    display.textContent = count;
+
+    circle.style.transition = `transform ${phase.time}s cubic-bezier(0.45,0,0.55,1), opacity ${phase.time}s ease`;
+    label.style.transition = `opacity ${phase.time * 0.5}s ease`;
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (phase.action === 'in') {
+        circle.style.transform = 'translate(-50%, -50%) scale(1)';
+        circle.style.opacity = '0.9';
+        label.style.opacity = '1';
+      } else if (phase.action === 'out') {
+        circle.style.transform = 'translate(-50%, -50%) scale(0.25)';
+        circle.style.opacity = '0.15';
+        label.style.opacity = '0.55';
+      } else {
+        label.style.opacity = '0.7';
+      }
+    }));
+
+    countdownInterval = setInterval(() => {
+      if (!breatheActive) { clearInterval(countdownInterval); return; }
+      count--;
+      if (count > 0) {
+        display.textContent = count;
+      } else {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+        currentPhaseIndex = (currentPhaseIndex + 1) % currentBreatheMode.length;
+        runBreathePhase();
+      }
+    }, 1000);
   }
 
   /* ─── READINESS SYSTEM (Persistent) ───────────────────────────── */
-  const READY_SEED = { hrv: { mean: 76.62, sd: 8.45 }, sleep: { mean: 435.05, sd: 99.72 }, rhr: { mean: 60.86, sd: 1.35 } };
+  const READY_SEED = { 
+    hrv: { mean: 76.62, sd: 8.45 }, 
+    sleep: { mean: 435.05, sd: 99.72 }, 
+    rhr: { mean: 60.86, sd: 1.35 } 
+  };
   const READY_WEIGHTS = { hrv: 0.7, sleep: 0.2, rhr: 0.1 };
-  
+
   function zComponent(value, m, s, invert = false) {
-    let z = (value - m) / s; if (invert) z = -z;
+    let z = (value - m) / s;
+    if (invert) z = -z;
     return Math.min(100, Math.max(0, 58.74 + 25 * z));
   }
+
   function fmt1(n) { return Number.isFinite(n) ? n.toFixed(1) : "—"; }
 
   function initReady() {
     ['hrv', 'sleep', 'rhr'].forEach(key => {
       const el = document.getElementById(`ready-${key}-input`);
       const savedVal = localStorage.getItem(`ulter_ready_${key}`);
+      
+      // Hydrate state
       if (savedVal) el.value = savedVal;
+      
+      // Save state on input
       el.addEventListener('input', (e) => {
         localStorage.setItem(`ulter_ready_${key}`, e.target.value);
         updateReadyUI();
@@ -245,7 +437,10 @@
     const rawHrv = document.getElementById('ready-hrv-input').value;
     const rawSleep = document.getElementById('ready-sleep-input').value;
     const rawRhr = document.getElementById('ready-rhr-input').value;
-    const vHrv = parseFloat(rawHrv?.replace(',', '.')), vSleep = parseFloat(rawSleep?.replace(',', '.')), vRhr = parseFloat(rawRhr?.replace(',', '.'));
+    
+    const vHrv = parseFloat(rawHrv?.replace(',', '.'));
+    const vSleep = parseFloat(rawSleep?.replace(',', '.'));
+    const vRhr = parseFloat(rawRhr?.replace(',', '.'));
     
     const valid = {
       hrv: !isNaN(vHrv) && vHrv > 0 && vHrv <= 300,
@@ -263,10 +458,10 @@
                     (READY_WEIGHTS.rhr * zComponent(vRhr, READY_SEED.rhr.mean, READY_SEED.rhr.sd, true));
       
       const wrap = document.getElementById('ready-score-wrapper');
-      let band = { label: "COMPROMISED", class: "score-compromised", note: "Prioritize recovery." };
-      if (total >= 85) band = { label: "PRIMED", class: "score-primed", note: "Full load cleared." };
-      else if (total >= 70) band = { label: "STEADY", class: "score-steady", note: "Normal training load." };
-      else if (total >= 55) band = { label: "MODERATE", class: "score-moderate", note: "Autoregulate volume." };
+      let band = { label: "COMPROMISED", class: "score-compromised", note: "Prioritize recovery. Consider active rest." };
+      if (total >= 85) band = { label: "PRIMED", class: "score-primed", note: "Full load cleared. Push intensity." };
+      else if (total >= 70) band = { label: "STEADY", class: "score-steady", note: "Normal training load. Maintain progression." };
+      else if (total >= 55) band = { label: "MODERATE", class: "score-moderate", note: "Autoregulate volume. Watch fatigue." };
 
       wrap.className = `mind-card text-center ${band.class}`;
       document.getElementById('ready-score-val').textContent = `${fmt1(total)}%`;
@@ -281,58 +476,128 @@
   }
 
   /* ─── INIT ────────────────────────────────────────────────────── */
-  document.addEventListener('DOMContentLoaded', () => {
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+  function init() {
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
 
-    const getMonday = () => { const d = new Date(); const day = d.getDay(); return new Date(d.setDate(d.getDate() - day + (day === 0 ? -6 : 1))).toDateString(); };
-    const currentWeek = getMonday();
-    if (localStorage.getItem('ulter_week') !== currentWeek) {
+    const getMondayOfCurrentWeek = () => {
+      const d = new Date();
+      const day = d.getDay();
+      const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+      return new Date(d.setDate(diff)).toDateString();
+    };
+
+    const savedWeek = localStorage.getItem('ulter_week');
+    const currentWeek = getMondayOfCurrentWeek();
+    
+    if (savedWeek && savedWeek !== currentWeek) {
       ['ulter_progress','ulter_completed','ulter_last'].forEach(k => localStorage.removeItem(k));
       progress = {}; completedDays = []; lastTouched = {};
       localStorage.setItem('ulter_week', currentWeek);
+    } else if (!savedWeek) {
+      localStorage.setItem('ulter_week', currentWeek);
     }
 
+    const btnBody = document.getElementById('mode-body-btn');
+    const btnMind = document.getElementById('mode-mind-btn');
+    const btnReady = document.getElementById('mode-ready-btn'); 
+    const viewBody = document.getElementById('view-body');
+    const viewMind = document.getElementById('view-mind');
+    const viewReady = document.getElementById('view-ready');
     const daySel = document.getElementById('day-selector');
+
+    const switchTab = (activeBtn, activeView, showDays) => {
+      if (navigator.vibrate) navigator.vibrate(15);
+      [btnBody, btnMind, btnReady].forEach(b => b.classList.remove('active'));
+      [viewBody, viewMind, viewReady].forEach(v => v.classList.add('hidden'));
+      activeBtn.classList.add('active');
+      activeView.classList.remove('hidden');
+      daySel.classList.toggle('hidden', !showDays);
+    };
+
+    btnBody.addEventListener('click', () => switchTab(btnBody, viewBody, true));
+    btnMind.addEventListener('click', () => switchTab(btnMind, viewMind, false));
+    btnReady.addEventListener('click', () => switchTab(btnReady, viewReady, false));
+
     ['MON','TUE','WED','THU','FRI','SAT','SUN'].forEach((l, i) => {
       const b = document.createElement('button');
-      b.className = `day-btn ${completedDays.includes(`day-${i}`) ? 'day-complete' : ''}`;
+      b.className = 'day-btn';
       b.setAttribute('role', 'tab');
+      b.setAttribute('aria-selected', 'false');
       b.textContent = l;
+      if (completedDays.includes(`day-${i}`)) b.classList.add('day-complete');
       b.addEventListener('click', () => {
         if (navigator.vibrate) navigator.vibrate(15);
-        document.querySelectorAll('.day-btn').forEach(x => { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
-        b.classList.add('active'); b.setAttribute('aria-selected', 'true');
+        document.querySelectorAll('.day-btn').forEach(x => {
+          x.classList.remove('active');
+          x.setAttribute('aria-selected', 'false');
+        });
+        b.classList.add('active');
+        b.setAttribute('aria-selected', 'true');
         renderWorkout(i);
       });
       daySel.appendChild(b);
     });
 
-    const switchTab = (activeBtn, activeView, showDays) => {
+    const savedTheme = localStorage.getItem('ulter_theme') || 'dark-1';
+    document.body.dataset.theme = savedTheme;
+    
+    const themeModal = document.getElementById('theme-modal-overlay');
+    document.getElementById('theme-toggle-btn').addEventListener('click', () => {
       if (navigator.vibrate) navigator.vibrate(15);
-      ['mode-body-btn','mode-mind-btn','mode-ready-btn'].forEach(id => document.getElementById(id).classList.remove('active'));
-      ['view-body','view-mind','view-ready'].forEach(id => document.getElementById(id).classList.add('hidden'));
-      activeBtn.classList.add('active'); activeView.classList.remove('hidden');
-      daySel.classList.toggle('hidden', !showDays);
-    };
-    document.getElementById('mode-body-btn').addEventListener('click', function() { switchTab(this, document.getElementById('view-body'), true); });
-    document.getElementById('mode-ready-btn').addEventListener('click', function() { switchTab(this, document.getElementById('view-ready'), false); });
+      themeModal.classList.add('visible');
+    });
 
-    document.body.dataset.theme = localStorage.getItem('ulter_theme') || 'dark-1';
+    themeModal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('visible'); });
+    document.querySelector('.theme-close-btn').addEventListener('click', () => themeModal.classList.remove('visible'));
+
     document.querySelectorAll('.theme-option').forEach(btn => {
       btn.addEventListener('click', () => {
+        if (navigator.vibrate) navigator.vibrate(15);
         const theme = btn.dataset.themeVal;
         document.body.dataset.theme = theme;
         localStorage.setItem('ulter_theme', theme);
-        document.getElementById('theme-modal-overlay').classList.remove('visible');
+        themeModal.classList.remove('visible');
       });
     });
 
-    document.getElementById('theme-toggle-btn').addEventListener('click', () => document.getElementById('theme-modal-overlay').classList.add('visible'));
-    document.querySelectorAll('.modal-overlay').forEach(el => el.addEventListener('click', function(e) { if(e.target===this) this.classList.remove('visible'); }));
-    document.querySelectorAll('.close-btn').forEach(btn => btn.addEventListener('click', (e) => e.target.closest('.modal-overlay').classList.remove('visible')));
+    const infoOverlay = document.getElementById('info-modal-overlay');
+    infoOverlay.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('visible'); });
+    document.getElementById('info-modal-close-btn').addEventListener('click', () => infoOverlay.classList.remove('visible'));
 
-    initReady();
+    const resetOverlay = document.getElementById('reset-modal-overlay');
+    resetOverlay.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('visible'); });
+    document.getElementById('reset-button').addEventListener('click', () => resetOverlay.classList.add('visible'));
+
+    document.getElementById('confirm-reset-btn').addEventListener('click', () => {
+      ['ulter_progress','ulter_completed','ulter_last'].forEach(k => localStorage.removeItem(k));
+      progress = {}; completedDays = []; lastTouched = {};
+      resetOverlay.classList.remove('visible');
+      document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('day-complete'));
+      const activeIdx = Array.from(daySel.children).findIndex(b => b.classList.contains('active'));
+      renderWorkout(activeIdx !== -1 ? activeIdx : ((new Date().getDay() + 6) % 7));
+    });
+    
+    document.getElementById('cancel-reset-btn').addEventListener('click', () => resetOverlay.classList.remove('visible'));
+
+    document.getElementById('breathe-modal-overlay').addEventListener('click', function(e) {
+      if (e.target === this) stopBreathe();
+    });
+
+    updateMantras();
+    initReady(); 
+
     const today = (new Date().getDay() + 6) % 7;
     daySel.children[today].click();
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
 })();
