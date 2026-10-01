@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ulter-v8.0';
+const CACHE_NAME = 'workout-sys-v4.0';
 const ASSETS = [
   './',
   './index.html',
@@ -10,6 +10,7 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (e) => {
+  self.skipWaiting();
   e.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
 });
 
@@ -27,15 +28,15 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
   e.respondWith(
-    caches.match(e.request).then((cachedResponse) => {
-      if (e.request.destination === 'document') {
-        return fetch(e.request).catch(() => cachedResponse);
-      }
-      return cachedResponse || fetch(e.request).then((response) => {
-        return caches.open(CACHE_NAME).then((cache) => {
-          cache.put(e.request, response.clone());
-          return response;
-        });
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.match(e.request).then((cachedResponse) => {
+        const fetchPromise = fetch(e.request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            cache.put(e.request, networkResponse.clone());
+          }
+          return networkResponse;
+        }).catch(() => {});
+        return cachedResponse || fetchPromise;
       });
     })
   );
