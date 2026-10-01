@@ -1,85 +1,81 @@
 (function() {
   'use strict';
 
-  /* ─── Workout Data (Friendly & Neutral Portuguese) ─── */
+  /* ─── Workout Data Phase 75kg (Strict 3-Set Cap & Plant-Based Optimized) ─── */
   const workoutData = [
-    { "day": 1, "title": "Monday", "exercises": [
-      { "name": "Puxada Alta Polia", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Mantenha a postura ereta e puxe a barra em direção ao peito. Estenda os braços de forma controlada na subida." },
-      { "name": "Remada Baixa", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Estabilize o tronco. Puxe a barra em direção ao abdômen, aproximando bem as escápulas." },
-      { "name": "Supino Inclinado", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Desça controladamente até a altura do peito e empurre sem travar totalmente os cotovelos no topo." },
-      { "name": "Crucifixo Inverso", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Braços ligeiramente flexionados. Concentre-se no movimento da parte posterior do ombro." },
-      { "name": "Elevação Lateral", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Movimento suave e controlado. Levante até a linha dos ombros." },
-      { "name": "Abdominal", "details": "3 × 15", "instructions": "EXECUÇÃO: Contraia o abdômen sem forçar ou puxar a região do pescoço." }
-    ]},
-    { "day": 2, "title": "Tuesday", "exercises": [
-      { "name": "Elevação Pélvica", "details": "4 × 8-10", "instructions": "EXECUÇÃO: Empurre o peso através dos calcanhares. Faça uma pausa breve no topo do movimento." },
-      { "name": "Leg Press 45°", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Pés na largura dos ombros. Desça de maneira controlada, mantendo o quadril firme no banco." },
-      { "name": "Extensão Lombar", "details": "2 × 12-15", "instructions": "EXECUÇÃO: Arredonde levemente as costas e retorne a posição contraindo os glúteos." },
-      { "name": "Mesa Flexora", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Mantenha o quadril bem apoiado. Concentre a força na parte posterior da coxa." },
-      { "name": "Cadeira Abdutora", "details": "3 × 15-20", "instructions": "EXECUÇÃO: Afaste as pernas de forma firme e controlada." },
-      { "name": "Panturrilha", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Pause brevemente na descida e suba de forma controlada." },
-      { "name": "Abdominal", "details": "3 × 15", "instructions": "EXECUÇÃO: Mantenha a postura e a respiração controlada durante a execução." }
-    ]},
-    { "day": 3, "title": "Wednesday", "exercises": [
-      { "name": "Remada Articulada", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Puxe os cotovelos para trás com foco nos músculos das costas." },
-      { "name": "Puxada Aberta", "details": "2 × 10-12", "instructions": "EXECUÇÃO: Foque na amplitude do movimento. Controle bem o retorno do peso." },
-      { "name": "Desenvolvimento", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Empurre o peso mantendo o controle contínuo durante a descida." },
-      { "name": "Elevação Lateral", "details": "4 × 12-15", "instructions": "EXECUÇÃO: Evite balançar o corpo, mantendo o foco na lateral dos ombros." },
-      { "name": "Tríceps Corda", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Mantenha os cotovelos fixos. Separe a corda suavemente no final do movimento." },
-      { "name": "Abdominal", "details": "3 × 15", "instructions": "EXECUÇÃO: Mantenha um ritmo tranquilo e a contração constante." }
-    ]},
-    { "day": 4, "title": "Thursday", "exercises": [
-      { "name": "Búlgaro", "details": "3 × 8-10", "instructions": "EXECUÇÃO: Incline o tronco levemente à frente. Desça com controle mantendo o equilíbrio." },
-      { "name": "Coice Polia", "details": "3 × 12", "instructions": "EXECUÇÃO: Movimente a perna para trás em diagonal. Concentre-se na contração do glúteo." },
-      { "name": "Cadeira Extensora", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Estenda as pernas completamente, segurando a posição por um instante." },
-      { "name": "Cadeira Flexora", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Mantenha o corpo estável no banco para focar no músculo alvo." },
-      { "name": "Panturrilha", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Mantenha um ritmo suave. Controle a descida com calma." },
-      { "name": "Abdominal", "details": "3 × 15", "instructions": "EXECUÇÃO: Solte o ar ao contrair, focando no trabalho da região central." }
-    ]},
-    { "day": 5, "title": "Friday", "exercises": [
-      { "name": "Pullover Polia Alta", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Braços estendidos. Puxe a barra até a linha do quadril usando as costas." },
-      { "name": "Face Pull", "details": "3 × 15", "instructions": "EXECUÇÃO: Puxe na direção do rosto, rotacionando levemente as mãos no fim do movimento." },
-      { "name": "Remada Baixa", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Mantenha a estabilidade. Cotovelos devem passar rente ao corpo." },
-      { "name": "Rosca Direta", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Foque no bíceps sem usar impulso das costas ou ombros." },
-      { "name": "Tríceps Barra Reta", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Estenda os braços completamente, mantendo a tensão no tríceps." },
-      { "name": "Abdominal", "details": "3 × 15", "instructions": "EXECUÇÃO: Mantenha o movimento fluido e o abdômen engajado." }
-    ]},
-    { "day": 6, "title": "Saturday", "exercises": [
-      { "name": "Elevação Pélvica", "details": "3 × 8-10", "instructions": "EXECUÇÃO: Retome o foco na ativação dos glúteos, empurrando com firmeza." },
-      { "name": "Agachamento", "details": "3 × 10-12", "instructions": "EXECUÇÃO: Desça com a postura alinhada e peito aberto. Encontre seu limite confortável." },
-      { "name": "Cadeira Abdutora", "details": "3 × 15-20", "instructions": "EXECUÇÃO: Sente-se bem apoiado. Movimento constante e controlado." },
-      { "name": "Cadeira Extensora", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Mantenha o controle do movimento até o final da série." },
-      { "name": "Panturrilha", "details": "3 × 12-15", "instructions": "EXECUÇÃO: Evite dar impulso na base do movimento. Foque na técnica." },
-      { "name": "Abdominal", "details": "3 × 15", "instructions": "EXECUÇÃO: Finalize o treino mantendo a técnica e o controle respiratório adequados." }
-    ]},
-    { "day": 7, "title": "Sunday", "exercises": [] }
+    { "day": 1, "title": "Upper A", "subtitle": "Chest Heavy & Side Delt", "duration": "55m", "exercises": [
+      { "name": "Flat DB Bench Press", "details": "3 × 6–8 reps · 150s rest", "instructions": "SETUP: 34-36kg. EXECUTION: 3s eccentric, 1s dead-stop pause at bottom, explosive concentric." },
+      { "name": "Seated DB Shoulder Press", "details": "3 × 8–10 reps · 120s rest", "instructions": "SETUP: 26-28kg, bench at 75-80°. EXECUTION: 3s eccentric, pause, drive." },
+      { "name": "Machine/Cable Lat Pulldown", "details": "3 × 8–10 reps · 120s rest", "instructions": "EXECUTION: Control the stretch. Pull to upper chest." },
+      { "name": "Machine Chest Flyes", "details": "3 × 10–12 reps · 90s rest", "instructions": "EXECUTION: Hold peak contraction for 1 second." },
+      { "name": "DB Lateral Raises", "details": "3 × 12–15 reps · 90s rest", "instructions": "EXECUTION: Add 5 lengthened partial reps out of the bottom stretch on the final set." }
+    ], "cardio": { "name": "Incline Walk", "details": "1 × 15 mins", "instructions": "PACING: LISS <130 BPM." } },
+    
+    { "day": 2, "title": "Lower A", "subtitle": "Anterior & Upper Glute", "duration": "55m", "exercises": [
+      { "name": "Hack Machine Squats", "details": "3 × 6–8 reps · 150s rest", "instructions": "SETUP: 85-90kg. EXECUTION: Deep, explosive speed sets. 3s eccentric." },
+      { "name": "KAS Glute Bridge", "details": "3 × 8–10 reps · 120s rest", "instructions": "EXECUTION: Heavy band above knees. 10-second max-effort squeeze at the top of the final rep." },
+      { "name": "Linear Leg Press", "details": "3 × 10–12 reps · 120s rest", "instructions": "SETUP: Feet low and narrow to bias quads." },
+      { "name": "Seated Hip Abductions", "details": "3 × 15 reps · 90s rest", "instructions": "EXECUTION: Pause on the outer contraction." }
+    ], "abFinisher": { "name": "Hanging Leg Raises", "details": "3 × 12 reps · 60s rest", "instructions": "EXECUTION: Strict control, zero momentum." } },
+    
+    { "day": 3, "title": "Upper B", "subtitle": "Upper Chest & Lateral Delt", "duration": "55m", "exercises": [
+      { "name": "Incline DB Press", "details": "3 × 8–10 reps · 150s rest", "instructions": "SETUP: 30-degree incline." },
+      { "name": "Chest-Supported Machine Row", "details": "3 × 8–10 reps · 120s rest", "instructions": "EXECUTION: Overload back thickness without spinal loading." },
+      { "name": "Low-to-High Cable Flyes", "details": "3 × 12 reps · 90s rest", "instructions": "EXECUTION: Bring handles together at upper chest level." },
+      { "name": "Lean-Away Cable Lateral Raises", "details": "3 × 10–12 reps/arm · 90s rest", "instructions": "EXECUTION: Continuous cable profile tension on side delts." },
+      { "name": "Cable Face Pulls", "details": "3 × 15 reps · 90s rest", "instructions": "EXECUTION: Pull the rope completely apart to challenge rear delts." }
+    ], "cardio": { "name": "Stationary Bike", "details": "1 × 15 mins", "instructions": "PACING: LISS <130 BPM." } },
+    
+    { "day": 4, "title": "Lower B", "subtitle": "Posterior Chain Overload", "duration": "55m", "exercises": [
+      { "name": "Dumbbell RDLs", "details": "3 × 8–10 reps · 150s rest", "instructions": "EXECUTION: Push hips fully backward; stretch hamstrings cleanly." },
+      { "name": "Deficit Reverse DB Lunges", "details": "3 × 10 reps/leg · 120s rest", "instructions": "SETUP: Step backward off a 2-inch platform for extreme glute stretch." },
+      { "name": "Lying Machine Leg Curls", "details": "3 × 10–12 reps · 90s rest", "instructions": "EXECUTION: Keep hips pressed firmly into the pad." },
+      { "name": "Standing Cable Hip Abductions", "details": "3 × 12–15 reps/leg · 90s rest", "instructions": "EXECUTION: Kick back and out at 45° to fire gluteus medius." }
+    ], "cardio": { "name": "Incline Walk", "details": "1 × 15 mins", "instructions": "PACING: LISS <130 BPM." } },
+    
+    { "day": 5, "title": "Upper C", "subtitle": "Hypertrophy Burnout & Arms", "duration": "55m", "exercises": [
+      { "name": "Weighted Dips / Decline Press", "details": "3 × 8–10 reps · 150s rest", "instructions": "EXECUTION: Maximize the deep stretch." },
+      { "name": "DB Lateral Raises", "details": "3 × 12 reps · 90s rest", "instructions": "EXECUTION: Drop weight 30% immediately on final set for a drop-set." },
+      { "name": "Seated Cable Rows", "details": "3 × 10–12 reps · 120s rest", "instructions": "SETUP: Wide Grip Attachment." },
+      { "name": "Rope Pushdowns", "details": "3 × 12 reps · 0s rest", "instructions": "EXECUTION: Superset directly into bicep curls." },
+      { "name": "Incline DB Bicep Curls", "details": "3 × 12 reps · 90s rest", "instructions": "EXECUTION: Let arms hang fully before curling." }
+    ], "abFinisher": { "name": "Ab Wheel Rollouts", "details": "3 × 10 reps · 60s rest", "instructions": "EXECUTION: Keep core braced, do not let lower back sag." } },
+    
+    { "day": 6, "title": "Lower C", "subtitle": "Posterior Machine Overload", "duration": "50m", "exercises": [
+      { "name": "Hex-Bar Deadlifts", "details": "3 × 5 reps · 180s rest", "instructions": "EXECUTION: Focus on explosive neural drive." },
+      { "name": "DB Bulgarian Split Squats", "details": "3 × 8–10 reps/leg · 120s rest", "instructions": "EXECUTION: Torso leaned forward at 30°." },
+      { "name": "Seated Leg Press Machine", "details": "3 × 12 reps · 120s rest", "instructions": "SETUP: Feet high and wide to recruit glutes/hamstrings." },
+      { "name": "Continuous Band-Walks", "details": "3 × 20 paces · 60s rest", "instructions": "EXECUTION: Keep constant lateral tension." }
+    ] },
+    
+    { "day": 7, "title": "Strategic Recovery", "subtitle": "System Rest", "duration": "—", "exercises": [], "cardio": { "name": "Dynamic Stretching", "details": "1 × 15 mins", "instructions": "METRIC CHECK: If waking HRV drops <65ms for 2 days, drop all working sets by 1 next week." } }
   ];
 
   /* ─── State ───────────────────────────────────────────────────── */
-  let progress      = JSON.parse(localStorage.getItem('workoutSysProgress')) || {};
-  let completedDays = JSON.parse(localStorage.getItem('workoutSysCompletedDays')) || [];
-  let lastTouched   = JSON.parse(localStorage.getItem('workoutSysLastTouched')) || {};
+  let progress      = JSON.parse(localStorage.getItem('ulter_progress')) || {};
+  let completedDays = JSON.parse(localStorage.getItem('ulter_completed')) || [];
+  let lastTouched   = JSON.parse(localStorage.getItem('ulter_last')) || {};
   let activeTimer   = null;
+  let wakeLock      = null;
 
   /* ─── Helpers ─────────────────────────────────────────────────── */
-  const parseSets = (details) => {
-    const m = details.match(/^(\d+)\s*[×xX]/);
-    return m ? parseInt(m[1], 10) : 1;
-  };
-
+  const parseSets = (details) => { const m = details.match(/^(\d+)\s*[×x]/); return m ? parseInt(m[1], 10) : 1; };
+  const getRestSeconds = (details) => { const m = details.match(/(\d+)s\s*rest/i); return m ? parseInt(m[1], 10) : 90; };
   const save = () => {
-    localStorage.setItem('workoutSysProgress', JSON.stringify(progress));
-    localStorage.setItem('workoutSysLastTouched', JSON.stringify(lastTouched));
+    localStorage.setItem('ulter_progress', JSON.stringify(progress));
+    localStorage.setItem('ulter_last', JSON.stringify(lastTouched));
   };
 
-  const getMondayOfCurrentWeek = () => {
-    const d = new Date();
-    const day = d.getDay();
-    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-    return new Date(d.setDate(diff)).toDateString();
-  };
+  /* ─── Wake Lock ───────────────────────────────────────────────── */
+  async function toggleWakeLock(lockActive) {
+    if (!('wakeLock' in navigator)) return;
+    try {
+      if (lockActive && !wakeLock) wakeLock = await navigator.wakeLock.request('screen');
+      else if (!lockActive && wakeLock) { await wakeLock.release(); wakeLock = null; }
+    } catch (err) { console.warn('Wake Lock error:', err); }
+  }
 
-  /* ─── WORKOUT SYSTEM ──────────────────────────────────────────── */
+  /* ─── Render Engine (DOM Fragment Optimized) ──────────────────── */
   function renderWorkout(idx) {
     const data = workoutData[idx];
     const list = document.getElementById('exercise-list');
@@ -88,33 +84,34 @@
     const fill = document.getElementById('progress-bar-fill');
     const progressLabel = document.getElementById('progress-label');
 
-    document.getElementById('workout-title').textContent = data.title;
+    document.getElementById('workout-title').innerHTML = `${data.title}<br><span style="font-weight:400;font-size:0.5em;opacity:0.6;">${data.subtitle}</span>`;
+    document.getElementById('workout-duration').textContent = data.duration === '—' ? '' : `EST. ${data.duration}`;
 
     list.innerHTML = '';
     compList.innerHTML = '';
 
     const items = [...(data.exercises || [])];
+    if (data.abFinisher) items.push({ ...data.abFinisher, idType: 'ab' });
+    if (data.cardio)     items.push({ ...data.cardio, idType: 'cardio' });
 
     if (items.length === 0) {
       compSection.classList.add('hidden');
       fill.parentElement.classList.add('hidden');
       progressLabel.classList.add('hidden');
-      list.innerHTML = `<li class="rest-day-message"><h3>Rest Day</h3><p>Take some time to rest and recover.</p></li>`;
+      list.innerHTML = `<li class="rest-day-message"><h3>Rest Day</h3><p>System recovery initiated.</p></li>`;
       return;
     }
 
     let total = 0, done = 0;
-    const activeNodesData = [];
-    const pendingNodes    = [];
-    const completedNodes  = [];
+    const activeNodesData = [], pendingNodes = [], completedNodes = [];
+    const fragmentActive = document.createDocumentFragment();
+    const fragmentComp = document.createDocumentFragment();
 
     items.forEach((ex, i) => {
-      const id = `d${idx}-e${i}`;
+      const id = `d${idx}-${ex.idType || 'e'}${i}`;
       const sTotal = parseSets(ex.details);
       const sCurrent = Math.min(progress[id] || 0, sTotal);
-
-      total += sTotal;
-      done  += sCurrent;
+      total += sTotal; done += sCurrent;
 
       const li = document.createElement('li');
       li.className = 'exercise-item';
@@ -126,81 +123,69 @@
       `;
 
       let pressTimer, isLongPress = false, startX = 0, startY = 0;
-
       li.addEventListener('pointerdown', (e) => {
         if (e.target.closest('.info-btn')) return;
-        isLongPress = false;
-        startX = e.clientX; startY = e.clientY;
+        isLongPress = false; startX = e.clientX; startY = e.clientY;
         li.setPointerCapture(e.pointerId);
         pressTimer = setTimeout(() => {
           isLongPress = true;
           if (navigator.vibrate) navigator.vibrate(40);
-          const newVal = Math.max(0, (progress[id] || 0) - 1);
-          progress[id] = newVal;
+          progress[id] = Math.max(0, (progress[id] || 0) - 1);
           lastTouched[id] = Date.now();
-          if (newVal < sTotal && activeTimer) {
-            clearInterval(activeTimer);
+          if (progress[id] < sTotal && activeTimer) {
+            clearInterval(activeTimer); activeTimer = null;
             document.getElementById('timer-display').classList.remove('visible');
-            activeTimer = null;
+            toggleWakeLock(false);
           }
-          save();
-          renderWorkout(idx);
+          save(); renderWorkout(idx);
         }, 450);
       });
-
-      li.addEventListener('pointermove', (e) => {
-        if (Math.abs(e.clientY - startY) > 12 || Math.abs(e.clientX - startX) > 12) clearTimeout(pressTimer);
-      });
-
+      li.addEventListener('pointermove', (e) => { if (Math.abs(e.clientY - startY) > 12 || Math.abs(e.clientX - startX) > 12) clearTimeout(pressTimer); });
       li.addEventListener('pointerup', (e) => {
         clearTimeout(pressTimer);
         if (isLongPress || e.target.closest('.info-btn')) return;
-        const newVal = Math.min(sTotal, (progress[id] || 0) + 1);
-        progress[id] = newVal;
+        progress[id] = Math.min(sTotal, (progress[id] || 0) + 1);
         lastTouched[id] = Date.now();
-        if (newVal < sTotal) startTimer(60);
-        save();
-        renderWorkout(idx);
+        if (progress[id] < sTotal) startTimer(getRestSeconds(ex.details));
+        save(); renderWorkout(idx);
       });
-
       li.addEventListener('pointercancel', () => clearTimeout(pressTimer));
       li.addEventListener('contextmenu', (e) => e.preventDefault());
-
-      li.querySelector('.info-btn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        showInfo(ex.name, ex.instructions || '');
-      });
+      li.querySelector('.info-btn').addEventListener('click', (e) => { e.stopPropagation(); showInfo(ex.name, ex.instructions || ''); });
 
       if (sCurrent >= sTotal) completedNodes.push(li);
       else if (sCurrent > 0) activeNodesData.push({ node: li, ts: lastTouched[id] || 0 });
       else pendingNodes.push(li);
     });
 
-    activeNodesData.sort((a, b) => b.ts - a.ts);
-    activeNodesData.forEach((item, index) => {
+    activeNodesData.sort((a, b) => b.ts - a.ts).forEach((item, index) => {
       item.node.classList.add(index === 0 ? 'primary-active' : 'secondary-active');
-      list.appendChild(item.node);
+      fragmentActive.appendChild(item.node);
     });
-    pendingNodes.forEach(node => list.appendChild(node));
-    completedNodes.forEach(node => compList.appendChild(node));
+    pendingNodes.forEach(node => fragmentActive.appendChild(node));
+    completedNodes.forEach(node => fragmentComp.appendChild(node));
+
+    list.appendChild(fragmentActive);
+    compList.appendChild(fragmentComp);
 
     fill.parentElement.classList.remove('hidden');
     progressLabel.classList.remove('hidden');
     fill.style.width = `${(done / total) * 100}%`;
     progressLabel.textContent = `${done} / ${total} SETS`;
-
     compSection.classList.toggle('hidden', compList.children.length === 0);
 
     if (done === total && total > 0 && !completedDays.includes(`day-${idx}`)) {
       completedDays.push(`day-${idx}`);
-      localStorage.setItem('workoutSysCompletedDays', JSON.stringify(completedDays));
+      localStorage.setItem('ulter_completed', JSON.stringify(completedDays));
       document.querySelectorAll('.day-btn')[idx].classList.add('day-complete');
-      showCompletion();
+      showCompletion(data.title);
     }
   }
 
   function startTimer(sec) {
+    if (sec <= 0) return;
     if (activeTimer) { clearInterval(activeTimer); activeTimer = null; }
+    toggleWakeLock(true);
     const end = Date.now() + sec * 1000;
     const el = document.getElementById('timer-display');
     el.classList.add('visible');
@@ -208,134 +193,146 @@
     function tick() {
       const rem = Math.ceil((end - Date.now()) / 1000);
       if (rem <= 0) {
-        clearInterval(activeTimer);
-        activeTimer = null;
+        clearInterval(activeTimer); activeTimer = null;
         el.classList.remove('visible');
         if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
-      } else {
-        el.textContent = `${Math.floor(rem / 60)}:${(rem % 60).toString().padStart(2, '0')}`;
-      }
+        toggleWakeLock(false);
+      } else el.textContent = `${Math.floor(rem / 60)}:${(rem % 60).toString().padStart(2, '0')}`;
     }
-    tick();
-    activeTimer = setInterval(tick, 500);
+    tick(); activeTimer = setInterval(tick, 500);
   }
 
+  /* ─── UI Modals ───────────────────────────────────────────────── */
   function showInfo(title, text) {
     document.getElementById('info-modal-title').textContent = title;
-    document.getElementById('info-modal-instructions').innerHTML = text
-      .split(/(EXECUÇÃO:|SETUP:)/g)
-      .filter(Boolean)
-      .map(l => {
-        l = l.trim();
-        return /^(EXECUÇÃO:|SETUP:)$/.test(l)
-          ? `<span class="instruction-label">${l.replace(':', '')}</span>`
-          : `<p>${l}</p>`;
-      }).join('');
+    document.getElementById('info-modal-instructions').innerHTML = text.split(/(SETUP:|EXECUTION:|PROTOCOL:|PACING:|METRIC CHECK:)/g).filter(Boolean)
+      .map(l => /^(SETUP:|EXECUTION:|PROTOCOL:|PACING:|METRIC CHECK:)$/.test(l.trim()) ? `<span class="instruction-label">${l.replace(':', '').trim()}</span>` : `<p>${l.trim()}</p>`).join('');
     document.getElementById('info-modal-overlay').classList.add('visible');
   }
 
-  function showCompletion() {
-    document.getElementById('completion-message').textContent = `Great job on finishing today's session.`;
+  function showCompletion(title) {
+    document.getElementById('completion-message').textContent = `${title} logged. Rest well.`;
     const el = document.getElementById('completion-overlay');
     el.classList.add('visible');
-    
-    // Ghost Click Neutralizer
     const showTime = Date.now();
-    el.onclick = (e) => {
-      if (Date.now() - showTime > 400) {
-        el.classList.remove('visible');
-        el.onclick = null;
-      }
+    el.onclick = () => { if (Date.now() - showTime > 400) { el.classList.remove('visible'); el.onclick = null; } };
+  }
+
+  /* ─── READINESS SYSTEM (Persistent) ───────────────────────────── */
+  const READY_SEED = { hrv: { mean: 76.62, sd: 8.45 }, sleep: { mean: 435.05, sd: 99.72 }, rhr: { mean: 60.86, sd: 1.35 } };
+  const READY_WEIGHTS = { hrv: 0.7, sleep: 0.2, rhr: 0.1 };
+  
+  function zComponent(value, m, s, invert = false) {
+    let z = (value - m) / s; if (invert) z = -z;
+    return Math.min(100, Math.max(0, 58.74 + 25 * z));
+  }
+  function fmt1(n) { return Number.isFinite(n) ? n.toFixed(1) : "—"; }
+
+  function initReady() {
+    ['hrv', 'sleep', 'rhr'].forEach(key => {
+      const el = document.getElementById(`ready-${key}-input`);
+      const savedVal = localStorage.getItem(`ulter_ready_${key}`);
+      if (savedVal) el.value = savedVal;
+      el.addEventListener('input', (e) => {
+        localStorage.setItem(`ulter_ready_${key}`, e.target.value);
+        updateReadyUI();
+      });
+    });
+    updateReadyUI();
+  }
+
+  function updateReadyUI() {
+    const rawHrv = document.getElementById('ready-hrv-input').value;
+    const rawSleep = document.getElementById('ready-sleep-input').value;
+    const rawRhr = document.getElementById('ready-rhr-input').value;
+    const vHrv = parseFloat(rawHrv?.replace(',', '.')), vSleep = parseFloat(rawSleep?.replace(',', '.')), vRhr = parseFloat(rawRhr?.replace(',', '.'));
+    
+    const valid = {
+      hrv: !isNaN(vHrv) && vHrv > 0 && vHrv <= 300,
+      sleep: !isNaN(vSleep) && vSleep > 0 && vSleep <= 24,
+      rhr: !isNaN(vRhr) && vRhr >= 20 && vRhr <= 200
     };
+
+    document.getElementById('card-hrv').classList.toggle('error', rawHrv && !valid.hrv);
+    document.getElementById('card-sleep').classList.toggle('error', rawSleep && !valid.sleep);
+    document.getElementById('card-rhr').classList.toggle('error', rawRhr && !valid.rhr);
+
+    if (valid.hrv && valid.sleep && valid.rhr) {
+      const total = (READY_WEIGHTS.hrv * zComponent(vHrv, READY_SEED.hrv.mean, READY_SEED.hrv.sd)) +
+                    (READY_WEIGHTS.sleep * zComponent(vSleep * 60, READY_SEED.sleep.mean, READY_SEED.sleep.sd)) +
+                    (READY_WEIGHTS.rhr * zComponent(vRhr, READY_SEED.rhr.mean, READY_SEED.rhr.sd, true));
+      
+      const wrap = document.getElementById('ready-score-wrapper');
+      let band = { label: "COMPROMISED", class: "score-compromised", note: "Prioritize recovery." };
+      if (total >= 85) band = { label: "PRIMED", class: "score-primed", note: "Full load cleared." };
+      else if (total >= 70) band = { label: "STEADY", class: "score-steady", note: "Normal training load." };
+      else if (total >= 55) band = { label: "MODERATE", class: "score-moderate", note: "Autoregulate volume." };
+
+      wrap.className = `mind-card text-center ${band.class}`;
+      document.getElementById('ready-score-val').textContent = `${fmt1(total)}%`;
+      document.getElementById('ready-band-label').textContent = band.label;
+      document.getElementById('ready-band-note').textContent = band.note;
+    } else {
+      document.getElementById('ready-score-wrapper').className = 'mind-card text-center';
+      document.getElementById('ready-score-val').textContent = "—.—";
+      document.getElementById('ready-band-label').textContent = "AWAITING INPUT";
+      document.getElementById('ready-band-note').textContent = "Complete metrics grid above.";
+    }
   }
 
   /* ─── INIT ────────────────────────────────────────────────────── */
-  function init() {
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
-      });
-    }
+  document.addEventListener('DOMContentLoaded', () => {
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 
-    const savedWeek = localStorage.getItem('workoutSysCurrentWeek');
-    const currentWeek = getMondayOfCurrentWeek();
-    
-    if (savedWeek && savedWeek !== currentWeek) {
-      ['workoutSysProgress','workoutSysCompletedDays','workoutSysLastTouched'].forEach(k => localStorage.removeItem(k));
+    const getMonday = () => { const d = new Date(); const day = d.getDay(); return new Date(d.setDate(d.getDate() - day + (day === 0 ? -6 : 1))).toDateString(); };
+    const currentWeek = getMonday();
+    if (localStorage.getItem('ulter_week') !== currentWeek) {
+      ['ulter_progress','ulter_completed','ulter_last'].forEach(k => localStorage.removeItem(k));
       progress = {}; completedDays = []; lastTouched = {};
-      localStorage.setItem('workoutSysCurrentWeek', currentWeek);
-    } else if (!savedWeek) {
-      localStorage.setItem('workoutSysCurrentWeek', currentWeek);
+      localStorage.setItem('ulter_week', currentWeek);
     }
 
     const daySel = document.getElementById('day-selector');
-
     ['MON','TUE','WED','THU','FRI','SAT','SUN'].forEach((l, i) => {
       const b = document.createElement('button');
-      b.className = 'day-btn';
+      b.className = `day-btn ${completedDays.includes(`day-${i}`) ? 'day-complete' : ''}`;
       b.setAttribute('role', 'tab');
       b.textContent = l;
-      if (completedDays.includes(`day-${i}`)) b.classList.add('day-complete');
       b.addEventListener('click', () => {
         if (navigator.vibrate) navigator.vibrate(15);
-        document.querySelectorAll('.day-btn').forEach(x => x.classList.remove('active'));
-        b.classList.add('active');
+        document.querySelectorAll('.day-btn').forEach(x => { x.classList.remove('active'); x.setAttribute('aria-selected', 'false'); });
+        b.classList.add('active'); b.setAttribute('aria-selected', 'true');
         renderWorkout(i);
       });
       daySel.appendChild(b);
     });
 
-    // Theme Management
-    const savedTheme = localStorage.getItem('workoutSysTheme') || 'dark-1';
-    document.body.dataset.theme = savedTheme;
-    
-    const themeModal = document.getElementById('theme-modal-overlay');
-    document.getElementById('theme-toggle-btn').addEventListener('click', () => {
+    const switchTab = (activeBtn, activeView, showDays) => {
       if (navigator.vibrate) navigator.vibrate(15);
-      themeModal.classList.add('visible');
-    });
+      ['mode-body-btn','mode-mind-btn','mode-ready-btn'].forEach(id => document.getElementById(id).classList.remove('active'));
+      ['view-body','view-mind','view-ready'].forEach(id => document.getElementById(id).classList.add('hidden'));
+      activeBtn.classList.add('active'); activeView.classList.remove('hidden');
+      daySel.classList.toggle('hidden', !showDays);
+    };
+    document.getElementById('mode-body-btn').addEventListener('click', function() { switchTab(this, document.getElementById('view-body'), true); });
+    document.getElementById('mode-ready-btn').addEventListener('click', function() { switchTab(this, document.getElementById('view-ready'), false); });
 
-    themeModal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('visible'); });
-    document.querySelector('.theme-close-btn').addEventListener('click', () => themeModal.classList.remove('visible'));
-
+    document.body.dataset.theme = localStorage.getItem('ulter_theme') || 'dark-1';
     document.querySelectorAll('.theme-option').forEach(btn => {
       btn.addEventListener('click', () => {
-        if (navigator.vibrate) navigator.vibrate(15);
         const theme = btn.dataset.themeVal;
         document.body.dataset.theme = theme;
-        localStorage.setItem('workoutSysTheme', theme);
-        themeModal.classList.remove('visible');
+        localStorage.setItem('ulter_theme', theme);
+        document.getElementById('theme-modal-overlay').classList.remove('visible');
       });
     });
 
-    // General Modals
-    const infoOverlay = document.getElementById('info-modal-overlay');
-    infoOverlay.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('visible'); });
-    document.getElementById('info-modal-close-btn').addEventListener('click', () => infoOverlay.classList.remove('visible'));
+    document.getElementById('theme-toggle-btn').addEventListener('click', () => document.getElementById('theme-modal-overlay').classList.add('visible'));
+    document.querySelectorAll('.modal-overlay').forEach(el => el.addEventListener('click', function(e) { if(e.target===this) this.classList.remove('visible'); }));
+    document.querySelectorAll('.close-btn').forEach(btn => btn.addEventListener('click', (e) => e.target.closest('.modal-overlay').classList.remove('visible')));
 
-    const resetOverlay = document.getElementById('reset-modal-overlay');
-    resetOverlay.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('visible'); });
-    document.getElementById('reset-button').addEventListener('click', () => resetOverlay.classList.add('visible'));
-
-    document.getElementById('confirm-reset-btn').addEventListener('click', () => {
-      ['workoutSysProgress','workoutSysCompletedDays','workoutSysLastTouched'].forEach(k => localStorage.removeItem(k));
-      progress = {}; completedDays = []; lastTouched = {};
-      resetOverlay.classList.remove('visible');
-      document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('day-complete'));
-      const activeIdx = Array.from(daySel.children).findIndex(b => b.classList.contains('active'));
-      renderWorkout(activeIdx !== -1 ? activeIdx : ((new Date().getDay() + 6) % 7));
-    });
-    
-    document.getElementById('cancel-reset-btn').addEventListener('click', () => resetOverlay.classList.remove('visible'));
-
+    initReady();
     const today = (new Date().getDay() + 6) % 7;
     daySel.children[today].click();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-
+  });
 })();
