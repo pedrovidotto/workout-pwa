@@ -1,4 +1,4 @@
-const CACHE_NAME = 'workout-sys-v4.0';
+const CACHE_NAME = 'ulter-v8.0';
 const ASSETS = [
   './',
   './index.html',
